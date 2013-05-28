@@ -1,0 +1,25 @@
+
+
+1:
+
+admin panel
+* add/remove authorized emails
+* mark user as admin
+
+Discussion
+* list threads
+* new thread
+* Reply
+* (admin) delete thread
+
+user profile
+* SHow/Allow edit of:
+* icon (gravatar)
+* display name
+* email
+
+
+??:
+Upload Image
+Wiki Page
+Pin Thread
