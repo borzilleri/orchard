@@ -23,3 +23,22 @@ user profile
 Upload Image
 Wiki Page
 Pin Thread
+
+database:
+
+threads
+* Title
+* posts [] ->
+
+posts:
+* created on
+* edited on
+* author
+* deleted
+* content (source)
+* content (html)
+
+users
+* email
+* displayName
+* appTokens
