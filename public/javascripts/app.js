@@ -9,9 +9,9 @@ require.config({
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-require(['jquery', function($) {
+require(['jquery', 'bootstrap/dropdown', function($) {
 	window.Orchard = window.Orchard || {};
 	$(function() {
-		require(["app/" + (window.Orchard.jsMain || window.Agile.controller || window.requireMain || "main")]);
+		require(["app/" + (window.Orchard.jsMain || "main")]);
 	});
-});
+}]);
