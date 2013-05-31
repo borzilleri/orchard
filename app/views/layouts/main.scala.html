@@ -1,4 +1,4 @@
-@(title: String, jsMain: String = "main")(content: Html)
+@(title: String, jsMain: String = "noop")(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
 					window.console = { log: noop, debug: noop, warn: noop, error: noop };
 				})();
 			}
-			var Orchard = {};
+			window.Orchard = {};
 			Orchard.jsMain = Orchard.jsMain || "@jsMain";
 		</script>
 		<script data-main="@routes.Assets.at("javascripts/app")" src="@routes.Assets.at("javascripts/vendor/require.js")"></script>

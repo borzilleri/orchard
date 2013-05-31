@@ -1,0 +1,15 @@
+@(email: String)
+
+@layouts.main("Orchard Login") {
+	<div class="container login-page">
+		<div class="row">
+			<div class="span5 offset2">
+				<h2 class="text-center">Orchard Login</h2>
+				<div class="well">
+					A login link has been sent to <strong>@email</strong>.
+					Please check your email and use that link to login.
+				</div>
+			</div>
+		</div>
+	</div>
+}

@@ -3,6 +3,9 @@ package io.rampant.orchard.security;
 import be.objectify.deadbolt.core.models.Subject;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
+import io.rampant.orchard.Global;
+import io.rampant.orchard.dao.UserDAO;
+import models.User;
 import play.mvc.Http;
 import play.mvc.Result;
 
@@ -12,7 +15,6 @@ import static play.mvc.Results.forbidden;
  * @author jonathan
  */
 public class OrchardDeadboltHandler implements DeadboltHandler {
-	public final static String AUTH_COOKIE_NAME = "tmp_orchard_cookie";
 
 	@Override
 	public Result beforeAuthCheck(Http.Context context) {
@@ -21,9 +23,20 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 
 	@Override
 	public Subject getSubject(Http.Context context) {
-		Http.Cookie c = context.request().cookie(AUTH_COOKIE_NAME);
+		Http.Cookie c = context.request().cookie(User.AUTH_COOKIE_NAME);
+		// No Cookie, no auth'd user.
 		if( null != c ) {
+			String appToken = c.value();
 
+			/**
+			 * This is a touch hacky. We can't use proper Dependency Injection here,
+			 * because this will get executed outside any context we have control
+			 * over. But we can get the global object we defined, which is hanging
+			 * on to the Guice injector. So we'll just grab our injector and get our
+			 * instance manually.
+			 */
+			UserDAO dao = Global.getInjector().getInstance(UserDAO.class);
+			return dao.findByToken(appToken);
 		}
 		return null;
 	}

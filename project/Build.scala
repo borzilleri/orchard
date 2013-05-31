@@ -9,7 +9,12 @@ object ApplicationBuild extends Build {
 
 	val appDependencies = Seq(
 		javaCore, javaJdbc, javaEbean,
-		"be.objectify" %% "deadbolt-java" % "2.1-RC2"
+		"be.objectify" %% "deadbolt-java" % "2.1-RC2",
+		"com.google.inject" % "guice" % "3.0",
+		"com.typesafe" %% "play-plugins-mailer" % "2.1.0",
+		"com.github.jmkgreen.morphia" % "morphia" % "1.2.3",
+		"com.github.jmkgreen.morphia" % "morphia-logging-slf4j" % "1.2.2",
+		"org.mongodb" % "mongo-java-driver" % "2.11.1"
 	)
 
 	def customLessEntryPoints(base: File): PathFinder = (

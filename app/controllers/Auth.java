@@ -1,45 +1,108 @@
 package controllers;
 
+import com.google.inject.Inject;
+import com.typesafe.plugin.MailerAPI;
+import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.security.AuthManagerService;
+import models.LoginForm;
+import models.User;
+import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+import play.Logger;
+import play.Play;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.login;
+import views.html.tokenSent;
+
+import static play.data.Form.form;
 
 /**
  * @author jonathan
  */
 public class Auth extends Controller {
+	private MailerAPI mailer;
+	private UserDAO userDAO;
+	private AuthManagerService tokenManager;
+
+	@Inject
+	public Auth(MailerAPI mailer, AuthManagerService tokenManagerService, UserDAO userDAO) {
+		this.mailer = mailer;
+		this.tokenManager = tokenManagerService;
+		this.userDAO = userDAO;
+	}
 
 	public Result login() {
-		return ok("login method");
+		return ok(views.html.login.render(form(LoginForm.class)));
+	}
+
+	public Result sendToken() {
+		Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
+
+		if( loginForm.hasErrors() ) {
+			return badRequest(login.render(loginForm));
+		}
+		else {
+			LoginForm loginUser = loginForm.get();
+			User user = userDAO.findByEmail(loginForm.get().email);
+			if( null == user || !user.canLogin() ) {
+				loginForm.reject("email", "Invalid email address.");
+				return forbidden(login.render(loginForm));
+			}
+			String authToken = tokenManager.generateAuthToken(loginUser.email, loginUser.rememberMe);
+
+			/**
+			 * TODO: Maybe this should be abstracted somewhere?
+			 */
+			mailer.setSubject("Orchard BBS Login Link");
+			mailer.addRecipient(loginForm.get().email);
+			mailer.addFrom(Play.application().configuration().getString("mailer.from"));
+			// TODO: Make this SSL Aware
+			String loginUrl = "http://" + request().host() + "/login/" + authToken;
+			mailer.send(
+				views.html.tokenSentEmailText.render(loginUrl).body(),
+				views.html.tokenSentEmailHtml.render(loginUrl).body()
+			);
+
+			return ok(tokenSent.render(loginForm.get().email));
+		}
 	}
 
 	public Result logout() {
-		// Clear Cookie
-		return ok("logout method");
+		response().discardCookie(User.AUTH_COOKIE_NAME);
+		return redirect(routes.Application.index());
 	}
 
 	public Result authenticate(String authToken) {
-		/**
-		 * TODO: Replace this with checking for the token in the DB.
-		 */
-		if( authToken.isEmpty() ) {
-			// TODO: Maybe this is a 403?
+		if( !tokenManager.authTokenExists(authToken) ) {
+			/**
+			 * Maybe display some error here?
+			 */
 			return redirect(routes.Auth.login());
 		}
 		else {
+			User user = tokenManager.getUser(authToken);
+			boolean persistLogin = tokenManager.isPersistentLogin(authToken);
+
 			// Generate a new app token
-			String appToken = "1";
+			String appToken = user.makeToken();
+
+			Logger.info("app token made: " + appToken);
+			userDAO.save(user);
 
 			// Determine Cookie Max Age
 			// If the Auth Token record had "remember me", set this for a year
-			/**
-			 * TODO: replace this with a proper check of the record.
-			 */
-			//Seconds maxAge = Seconds.secondsBetween(DateTime.now(), DateTime.now().plusYears(1));
-			Seconds maxAge = Seconds.seconds(0);
+			Integer maxAge = null;
+			if( persistLogin ) {
+				maxAge = Seconds.secondsBetween(DateTime.now(), DateTime.now().plusYears(1)).getSeconds();
+				Logger.info("Persisting login, cookie maxAge:"+maxAge);
+			}
 
 			// Set it in a cookie
-			response().setCookie("tmp_orchard_cookie", appToken, maxAge.getSeconds());
+			response().setCookie(User.AUTH_COOKIE_NAME, appToken, maxAge);
+
+			tokenManager.resolveAuthToken(authToken);
 
 			// Send us back to the index.
 			return redirect(routes.Application.index());

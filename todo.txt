@@ -21,8 +21,11 @@ user profile
 
 ??:
 Upload Image
+imgur support?
 Wiki Page
 Pin Thread
+vote on post
+surveys?
 
 database:
 

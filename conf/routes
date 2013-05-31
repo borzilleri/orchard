@@ -2,8 +2,9 @@
 GET    /                              @controllers.Application.index()
 
 GET    /login                         @controllers.Auth.login()
+POST   /login                         @controllers.Auth.sendToken()
 GET    /logout                        @controllers.Auth.logout()
-GET    /login/:token                  @controllers.Auth.authenticate(authToken: String)
+GET    /login/:authToken                  @controllers.Auth.authenticate(authToken: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /js/routes.js                  controllers.Javascript.jsRoutes()
