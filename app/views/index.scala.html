@@ -8,43 +8,23 @@
 				<a href="#create-thread" role="button" class="btn" data-toggle="modal">
 					Start Thread</a>
 
-				<ul class="thread-list">
-					<li>
-						<div>
-							<span class="thread-author pull-right">by Author</span>
-							<h4><span class="icon-exclamation-sign thread-updated"></span>
-								Thread Title</h4>
-						</div>
-						<div>
-							last post on <span class="thread-updated-on">
-							0000-00-00 00:00:00 PDT</span>
-							by <span class="thread-updated-by">Comment Author</span>
-						</div>
-					</li>
-					<li>
-						<span class="thread-author pull-right">by Author</span>
-						<h3><span class="icon-exclamation-sign thread-updated"></span>
-							Thread Title</h3>
-						<div>
-							last post on <span class="thread-updated-on">
-							0000-00-00 00:00:00 PDT</span>
-							by <span class="thread-updated-by">Comment Author</span>
-						</div>
-					</li>
-					<li>
-						<span class="thread-author pull-right">by Author</span>
-						<h3><span class="icon-exclamation-sign thread-updated"></span>
-							Thread Title</h3>
-						<div>
-							last post on <span class="thread-updated-on">
-							0000-00-00 00:00:00 PDT</span>
-							by <span class="thread-updated-by">Comment Author</span>
-						</div>
-					</li>
-				</ul>
+				<div id="thread-list"></div>
 			</div>
 		</div>
 	</div>
+
+	<script id="thread-item-template" type="text/html">
+		<div>
+			<span class="thread-author pull-right">by Author</span>
+			<h4><span class="icon-exclamation-sign thread-updated"></span>
+				Thread Title</h4>
+		</div>
+		<div>
+			last post on <span class="thread-updated-on">
+			0000-00-00 00:00:00 PDT</span>
+			by <span class="thread-updated-by">Comment Author</span>
+		</div>
+	</script>
 
 	<div class="modal hide fade" id="create-thread">
 		<div class="modal-header">
@@ -53,7 +33,8 @@
 		</div>
 		<div class="modal-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#create-thread-editor" data-toggle="tab">Write</a></li>
+				<li class="active"><a href="#create-thread-editor" data-toggle="tab">
+					Write</a></li>
 				<li><a href="#create-thread-preview" data-toggle="tab">Preview</a></li>
 			</ul>
 			<div class="tab-content">

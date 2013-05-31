@@ -10,6 +10,8 @@ require.config({
 require(['jquery', 'bootstrap/dropdown'], function($) {
 	window.Orchard = window.Orchard || {};
 	$(function() {
-		require(["app/" + (window.Orchard.jsMain || "main")]);
+		if( window.Orchard.jsMain ) {
+			require(["app/" + window.Orchard.jsMain]);
+		}
 	});
 });
