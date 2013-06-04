@@ -1,0 +1,28 @@
+@(user: User)
+@layouts.main("Create Thread", "createThread") {
+	@partials.navbar(user, "createThread")
+	<div class="container">
+		<div class="row">
+			<div class="span6" id="main-view"></div>
+		</div>
+	</div>
+
+	<script type="text/html" id="create-thread-template">
+		<input class="input-block-level" name="title" placeholder="thread title&hellip;">
+
+		<ul class="nav nav-tabs post-tabs">
+			<li class="active"><a href="#editor-pane" class="show-editor" data-toggle="tab">
+				Write</a></li>
+			<li><a href="#preview-pane" class="show-preview" data-toggle="tab">
+				Preview</a></li>
+		</ul>
+		<div class="tab-content post-tab-content">
+			<div id="editor-pane" class="tab-pane active editor-pane"></div>
+			<div id="preview-pane" class="tab-pane preview-pane"></div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="pull-right btn btn-success post-submit">Submit</button>
+		</div>
+	</script>
+}

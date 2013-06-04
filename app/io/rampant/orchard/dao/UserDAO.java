@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 /**
  * @author jonathan
@@ -35,7 +36,9 @@ public class UserDAO extends BasicDAO<User, ObjectId> {
 	}
 
 	public User findByToken(String appToken) {
-		return ds.createQuery(entityClazz).filter("tokens in", appToken).get();
+		ArrayList<String> t = new ArrayList<>();
+		t.add(appToken);
+		return ds.createQuery(entityClazz).field("tokens").hasAnyOf(t).get();
 	}
 
 	public User current() {

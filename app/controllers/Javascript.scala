@@ -18,4 +18,19 @@ object Javascript extends Controller {
 		}
 	}
 
+	def threadRoutes = Cached("thread-routes") {
+		Action {
+			implicit request =>
+				import controllers.api.routes.javascript._
+				val routes = Routes.javascriptRouter("routes")(
+					ThreadAPI.create,
+					ThreadAPI.getAll,
+					ThreadAPI.updatePost
+				)
+				Ok(
+					s"define(function() { $routes; return routes.controllers; });"
+				).as(JAVASCRIPT)
+		}
+	}
+
 }

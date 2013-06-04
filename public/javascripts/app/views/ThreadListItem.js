@@ -3,7 +3,7 @@ define(function(require) {
 	var Marionette = require('backbone.marionette');
 	require('backbone.stickit');
 
-	return Backbone.ItemView.extend({
+	return Backbone.Marionette.ItemView.extend({
 		template: '#thread-item-template'
 	});
 

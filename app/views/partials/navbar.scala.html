@@ -1,25 +1,37 @@
-@(user: User)
+@(user: User, activeTab: String = "")
+@import be.objectify.deadbolt.java.views.html.subjectPresent
+@import be.objectify.deadbolt.java.views.html.subjectPresentOr
+
 <div class="navbar">
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="brand" href="@routes.Application.index()">Orchard BBS</a>
 			<ul class="nav">
-				<li class="active">
-					<a href="#">All Discussions</a>
+				<li class="@if(activeTab == "listThreads") {active}">
+					<a href="@routes.Application.index()">All Discussions</a>
 				</li>
+				@subjectPresent() {
+					<li class="@if(activeTab == "createThread") {active}">
+						<a href="@routes.Thread.create()">Create Thread</a>
+					</li>
+				}
 			</ul>
-			<ul class="nav pull-right">
-				<li class="dropdown pull-right">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="icon-user"></span> @user.email
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="/user">Profile</a></li>
-						<li><a href="@routes.Auth.logout()">Logout</a></li>
-					</ul>
-				</li>
-			</ul>
+			@subjectPresentOr() {
+				<ul class="nav pull-right">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<span class="icon-user"></span> @user.email
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="/user">Profile</a></li>
+							<li><a href="@routes.Auth.logout()">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			} {
+				<a href="@routes.Auth.login()" class="pull-right btn">Login</a>
+			}
 		</div>
 	</div>
 </div>

@@ -3,9 +3,9 @@ define(function(require) {
 	var Marionette = require("backbone.marionette");
 	require("backbone.stickit");
 
-	var Item = require('./Item');
+	var Item = require('./ThreadListItem');
 
-	return Backbone.CollectionView.extend({
+	return Backbone.Marionette.CollectionView.extend({
 		itemViewContainer: 'ul',
 		itemView: Item,
 		events: {

@@ -15,7 +15,6 @@ public class Application extends Controller {
 		this.userDAO = userDAO;
 	}
 
-	@SubjectPresent()
 	public Result index() {
 		return ok(index.render("OrchardBBS", userDAO.current()));
 	}

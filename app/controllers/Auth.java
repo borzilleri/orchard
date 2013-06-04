@@ -13,8 +13,9 @@ import play.Play;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.login;
-import views.html.tokenSent;
+import views.html.auth.login;
+import views.html.auth.tokenSentEmailHtml;
+import views.html.auth.tokenSentEmailText;
 
 import static play.data.Form.form;
 
@@ -34,7 +35,7 @@ public class Auth extends Controller {
 	}
 
 	public Result login() {
-		return ok(views.html.login.render(form(LoginForm.class)));
+		return ok(views.html.auth.login.render(form(LoginForm.class)));
 	}
 
 	public Result sendToken() {
@@ -61,11 +62,11 @@ public class Auth extends Controller {
 			// TODO: Make this SSL Aware
 			String loginUrl = "http://" + request().host() + "/login/" + authToken;
 			mailer.send(
-				views.html.tokenSentEmailText.render(loginUrl).body(),
-				views.html.tokenSentEmailHtml.render(loginUrl).body()
+				tokenSentEmailText.render(loginUrl).body(),
+				tokenSentEmailHtml.render(loginUrl).body()
 			);
 
-			return ok(tokenSent.render(loginForm.get().email));
+			return ok(views.html.auth.tokenSent.render(loginForm.get().email));
 		}
 	}
 
@@ -96,7 +97,7 @@ public class Auth extends Controller {
 			Integer maxAge = null;
 			if( persistLogin ) {
 				maxAge = Seconds.secondsBetween(DateTime.now(), DateTime.now().plusYears(1)).getSeconds();
-				Logger.info("Persisting login, cookie maxAge:"+maxAge);
+				Logger.info("Persisting login, cookie maxAge:" + maxAge);
 			}
 
 			// Set it in a cookie

@@ -4,8 +4,16 @@ GET    /                              @controllers.Application.index()
 GET    /login                         @controllers.Auth.login()
 POST   /login                         @controllers.Auth.sendToken()
 GET    /logout                        @controllers.Auth.logout()
-GET    /login/:authToken                  @controllers.Auth.authenticate(authToken: String)
+GET    /login/:authToken              @controllers.Auth.authenticate(authToken: String)
+
+GET    /thread/:slug                  @controllers.Thread.get(slug: String)
+GET    /thread                        @controllers.Thread.create()
+
+POST   /thread                        @controllers.api.ThreadAPI.create()
+GET    /api/threads                   @controllers.api.ThreadAPI.getAll()
+PUT    /api/threads/:id/:index        @controllers.api.ThreadAPI.updatePost(id: String, index: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /js/routes.js                  controllers.Javascript.jsRoutes()
+GET    /js/routes/thread.js           controllers.Javascript.threadRoutes()
 GET    /assets/*file                  controllers.Assets.at(path="/public", file)
