@@ -15,7 +15,7 @@ object ApplicationBuild extends Build {
 		"com.github.jmkgreen.morphia" % "morphia" % "1.2.3",
 		"com.github.jmkgreen.morphia" % "morphia-logging-slf4j" % "1.2.2",
 		"org.mongodb" % "mongo-java-driver" % "2.11.1",
-		"org.pegdown" % "pegdown" % "1.2.0"
+		"org.pegdown" % "pegdown" % "1.3.0"
 	)
 
 	def customLessEntryPoints(base: File): PathFinder = (
