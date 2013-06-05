@@ -2,6 +2,7 @@ package models;
 
 import com.github.jmkgreen.morphia.annotations.Embedded;
 import com.github.jmkgreen.morphia.annotations.Reference;
+import play.data.validation.Constraints;
 
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import java.util.Date;
  */
 @Embedded
 public class Post {
+	@Constraints.Required
 	public String contentSource;
 	public String contentHtml;
 	public Date createdOn;

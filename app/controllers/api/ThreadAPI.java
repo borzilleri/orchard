@@ -2,6 +2,9 @@ package controllers.api;
 
 import com.google.inject.Inject;
 import io.rampant.orchard.dao.ThreadDAO;
+import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.markdown.MarkdownService;
+import io.rampant.orchard.util.StringUtils;
 import models.Post;
 import org.bson.types.ObjectId;
 import play.data.Form;
@@ -16,10 +19,16 @@ import java.util.Date;
  */
 public class ThreadAPI extends Controller {
 	ThreadDAO threads;
+	UserDAO users;
+	MarkdownService markdown;
+	StringUtils stringUtils;
 
 	@Inject
-	public ThreadAPI(ThreadDAO threadDAO) {
+	public ThreadAPI(ThreadDAO threadDAO, UserDAO userDAO, MarkdownService markdownService, StringUtils sUtil) {
 		threads = threadDAO;
+		users = userDAO;
+		markdown = markdownService;
+		stringUtils = sUtil;
 	}
 
 	public Result create() {
@@ -30,7 +39,11 @@ public class ThreadAPI extends Controller {
 		}
 
 		models.Thread t = form.get();
-		t.posts.get(0).createdOn = new Date();
+		t.slug = stringUtils.slugify(t.title);
+		Post p = t.posts.get(0);
+		p.createdOn = new Date();
+		p.author = users.current();
+		p.contentHtml = markdown.parse(p.contentSource);
 
 		threads.save(t);
 		return ok(Json.toJson(t));

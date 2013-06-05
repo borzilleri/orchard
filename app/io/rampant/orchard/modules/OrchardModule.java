@@ -7,8 +7,12 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.typesafe.plugin.MailerAPI;
 import io.rampant.orchard.MailerAPIProvider;
+import io.rampant.orchard.markdown.MarkdownService;
+import io.rampant.orchard.markdown.PegDownProvider;
+import io.rampant.orchard.markdown.PegDownService;
 import io.rampant.orchard.security.AuthManagerService;
 import io.rampant.orchard.security.StaticAuthManager;
+import org.pegdown.PegDownProcessor;
 
 import java.net.UnknownHostException;
 
@@ -16,6 +20,8 @@ public class OrchardModule extends com.google.inject.AbstractModule {
 	protected void configure() {
 		bind(AuthManagerService.class).to(StaticAuthManager.class).in(Singleton.class);
 		bind(MailerAPI.class).toProvider(MailerAPIProvider.class);
+		bind(MarkdownService.class).to(PegDownService.class);
+		bind(PegDownProcessor.class).toProvider(PegDownProvider.class);
 	}
 
 	@Provides

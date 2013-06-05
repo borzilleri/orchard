@@ -11,6 +11,7 @@ Discussion
 * new thread
 * Reply
 * (admin) delete thread
+* close thread
 
 user profile
 * SHow/Allow edit of:

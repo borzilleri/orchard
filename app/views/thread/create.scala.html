@@ -2,8 +2,8 @@
 @layouts.main("Create Thread", "createThread") {
 	@partials.navbar(user, "createThread")
 	<div class="container">
-		<div class="row">
-			<div class="span6" id="main-view"></div>
+		<div class="row-fluid">
+			<div class="span8 offset1" id="main-view"></div>
 		</div>
 	</div>
 
@@ -22,7 +22,10 @@
 		</div>
 
 		<div class="form-actions">
-			<button type="submit" class="pull-right btn btn-success post-submit">Submit</button>
+			<button type="submit" class="pull-right btn btn-success post-submit" data-loading-text="Posting...">
+				<span class="post-submit-icon"></span> Submit</button>
 		</div>
+
+		<div class="alert alert-error" style="display: none;"></div>
 	</script>
 }
