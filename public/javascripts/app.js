@@ -1,7 +1,7 @@
 require.config({
 	baseUrl: '/assets/javascripts/vendor',
 	paths: {
-		underscore: 'lodash',
+		underscore: 'lodash.underscore',
 		app: '../app',
 		lib: '../lib'
 	}

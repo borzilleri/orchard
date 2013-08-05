@@ -5,15 +5,16 @@ define(function(require) {
 	var Post = require('./Post');
 
 	var model = Backbone.AssociatedModel.extend({
-		initialize: function() {
-			this.get('posts').add(new Post.Model());
-		},
 		url: function() {
 			return routes.api.ThreadAPI.create().url
 		},
 		defaults: {
 			title: "",
 			closed: false,
+			contentSource: '',
+			contentHtml: null,
+			createdOn: null,
+			modifiedOn: null,
 			posts: []
 		},
 		relations: [

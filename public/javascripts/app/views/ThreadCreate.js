@@ -3,6 +3,12 @@ define(function(require) {
 	var Marionette = require('backbone.marionette');
 	var marked = require('marked');
 	var ace = require("ace/ace");
+	var Cocktail = require('Cocktail');
+	var FormErrorsMixin = require('lib/mixins/form-errors');
+	var FormAlertMixin = require('lib/mixins/form-alert');
+	var StickitMixin = require('lib/mixins/stickit-view');
+	var LoadingButtonMixin = require('lib/mixins/ajax-loading-button');
+
 	require('bootstrap/tab');
 	require('backbone.stickit');
 
@@ -15,7 +21,7 @@ define(function(require) {
 		smartypants: true
 	});
 
-	return Marionette.ItemView.extend({
+	var view = Marionette.ItemView.extend({
 		template: '#create-thread-template',
 		tagName: 'form',
 		className: 'well',
@@ -32,8 +38,7 @@ define(function(require) {
 			'click .post-submit': 'onSave'
 		},
 		bindings: {
-			'title': 'title',
-			'closed': 'closed'
+			'[name="title"]': 'title'
 		},
 		initialize: function() {
 			_(this).bindAll('onEditorChange', 'onSaveSuccess', 'onSaveFail',
@@ -53,7 +58,7 @@ define(function(require) {
 			this.stickit();
 		},
 		onEditorChange: function(event) {
-			this.model.set('posts[0].contentSource', this.editor.getValue());
+			this.model.set('contentSource', this.editor.getValue());
 			this.ui.preview.html(marked(this.editor.getValue()));
 		},
 		onTabShow: function(event) {
@@ -61,24 +66,31 @@ define(function(require) {
 		},
 		onSave: function(event) {
 			event.preventDefault();
-			this.ui.alert.hide();
-			this.ui.save.button('loading');
-			this.ui.save.find('.post-submit-icon').addClass('icon-spin icon-refresh');
-			// button loading
+			this.trigger('errors:clear');
 			this.model.save()
 				.done(this.onSaveSuccess)
-				.fail(this.onSaveFail)
-				.always(this.onSaveComplete);
+				.fail(this.onSaveFail);
 		},
 		onSaveSuccess: function() {
+			this.trigger('alert:show', 'Success', 'Thread created.', 'success');
 			// We should redirect here.
 		},
-		onSaveFail: function() {
-			this.ui.alert.text('Posting failed: ').show();
-		},
-		onSaveComplete: function() {
-			this.ui.save.button("reset");
-			this.ui.save.find('.post-submit-icon').removeClass('icon-spin icon-refresh');
+		onSaveFail: function(xhr) {
+			var errors;
+			try {
+				errors = $.parseJSON(xhr.responseText);
+			}
+			catch( err ) {
+				return;
+			}
+			if( !errors ) {
+				return;
+			}
+			this.trigger('errors:show', errors);
+			this.trigger('alert:show', 'Error', 'An error occurred saving the thread.', 'error');
 		}
 	});
+	Cocktail.mixin(view, StickitMixin, LoadingButtonMixin, FormAlertMixin, FormErrorsMixin);
+
+	return view;
 });

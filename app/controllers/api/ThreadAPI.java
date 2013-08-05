@@ -35,15 +35,11 @@ public class ThreadAPI extends Controller {
 		Form<models.Thread> form = Form.form(models.Thread.class).bindFromRequest();
 
 		if( form.hasErrors() || form.hasGlobalErrors() ) {
-			return badRequest();
+			return badRequest(form.errorsAsJson());
 		}
 
 		models.Thread t = form.get();
 		t.slug = stringUtils.slugify(t.title);
-		Post p = t.posts.get(0);
-		p.createdOn = new Date();
-		p.author = users.current();
-		p.contentHtml = markdown.parse(p.contentSource);
 
 		threads.save(t);
 		return ok(Json.toJson(t));

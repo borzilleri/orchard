@@ -12,13 +12,14 @@ import java.util.List;
  * @author jonathan
  */
 @Entity("threads")
-public class Thread {
+public class Thread extends Post {
 	@Id
 	public ObjectId id;
 
 	@Constraints.Required
 	public String title;
 	public String slug;
+
 	@Embedded
 	public List<Post> posts;
 }

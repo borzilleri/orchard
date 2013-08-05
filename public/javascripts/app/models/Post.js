@@ -2,7 +2,7 @@ define(function(require) {
 	var Backbone = require("backbone");
 	require('backbone-associations');
 
-	var model = Backbone.AssociatedModel.extend({
+	var model = Backbone.Model.extend({
 		defaults: {
 			contentSource: '',
 			contentHtml: null,
