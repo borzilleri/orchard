@@ -1,6 +1,5 @@
 package controllers;
 
-import be.objectify.deadbolt.java.actions.SubjectPresent;
 import com.google.inject.Inject;
 import io.rampant.orchard.dao.UserDAO;
 import play.mvc.Controller;
@@ -18,5 +17,4 @@ public class Application extends Controller {
 	public Result index() {
 		return ok(index.render("OrchardBBS", userDAO.current()));
 	}
-
 }
