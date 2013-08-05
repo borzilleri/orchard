@@ -1,24 +1,31 @@
 # v1:
 
 ## Admin Panel
-* add/remove authorized emails
-* mark user as admin
+* Add/Edit/Remove Authorized Emails
+* Set users as admin
+* Reset system admin password
 
 ## Discussions
-* list threads
-* new thread
-* Reply
-* (admin) delete thread
-* close thread
+* Create a new Topic
+* List Topics
+* View a Topic (& its replies)
+* Reply to an exist Topic
+* Delete a Reply/Topic (ADMIN/OWNER)
+* Close a Topic (ADMIN/OWNER)
 
 ## User Profiles
-* SHow/Allow edit of:
-* icon (gravatar)
-* display name
-* email
+* Edit Display Name
+* Add/Remove linked emails.
+* Display current icon (via gravatar)
+* Select email for gravatar icon
+
+## Other
+* Implement set up/init script/page
+
+	* Set up system admin.
+
 
 # Future Versions
-
 * image uploading
 * imgur support?
 * wiki pages
@@ -26,27 +33,3 @@
 * voting/rating
 * surveys/polls?
 
-----
-
-# Rough Schema
-
-## Thread
-
-* Title
-* Posts (list)
-
-## Post
-
-* Author
-* Created on
-* Last Modified on
-* Last Modified By
-* isDeleted
-* content (raw source)
-* content (html source)
-
-## Users
-
-* email
-* display name
-* app tokens (list)
