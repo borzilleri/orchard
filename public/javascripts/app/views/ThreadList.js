@@ -5,8 +5,10 @@ define(function(require) {
 
 	var TopicView = Marionette.ItemView.extend({
 		template: '#thread-item-template',
+		tagName: 'li',
 		bindings: {
-
+			'.topic-author': 'author.displayName',
+			'.topic-title': 'title'
 		}
 	});
 	Cocktail.mixin(TopicView, StickitMixin);

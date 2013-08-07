@@ -3,6 +3,7 @@ define(function(require) {
 	require('backbone-associations');
 	var routes = require('/js/routes/thread.js');
 	var Post = require('./Post');
+	var User = require('./User');
 
 	var model = Backbone.AssociatedModel.extend({
 		url: function() {
@@ -13,11 +14,18 @@ define(function(require) {
 			closed: false,
 			contentSource: '',
 			contentHtml: null,
+			url: '',
 			createdOn: null,
 			modifiedOn: null,
+			author: null,
 			posts: []
 		},
 		relations: [
+			{
+				type: Backbone.One,
+				key: 'author',
+				relatedModel: User.Model
+			},
 			{
 				type: Backbone.Many,
 				key: 'posts',

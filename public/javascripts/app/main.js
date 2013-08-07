@@ -12,7 +12,9 @@ define(function(require) {
 
 	app.addInitializer(function(options) {
 		collection.fetch().done(function() {
-			app.threads.show(new ThreadListView(collection));
+			app.threads.show(new ThreadListView({
+				collection: collection
+			}));
 		})
 	});
 
