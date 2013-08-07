@@ -14,7 +14,7 @@ import java.util.List;
 @Entity("threads")
 public class Thread extends Post {
 	@Id
-	public ObjectId id;
+	private ObjectId id;
 
 	@Constraints.Required
 	public String title;
@@ -22,4 +22,20 @@ public class Thread extends Post {
 
 	@Embedded
 	public List<Post> posts;
+
+	public void setId(String id) {
+		this.id = new ObjectId(id);
+	}
+
+	public String getId() {
+		if( null != id ) {
+			return id.toString();
+		}
+		return null;
+	}
+
+	public String getUrl() {
+		return "";
+	}
+
 }
