@@ -41,9 +41,7 @@ define(function(require) {
 			'[name="title"]': 'title'
 		},
 		initialize: function() {
-			_(this).bindAll('onEditorChange', 'onSaveSuccess', 'onSaveFail',
-				'onSaveComplete');
-			this.on('close', this.unstickit);
+			_(this).bindAll('onEditorChange', 'onSaveSuccess', 'onSaveFail');
 		},
 		onRender: function() {
 			this.editor = ace.edit(this.ui.editor.get(0));
@@ -55,7 +53,6 @@ define(function(require) {
 			this.editor.getSession().on('change', this.onEditorChange);
 
 			this.editor.focus();
-			this.stickit();
 		},
 		onEditorChange: function(event) {
 			this.model.set('contentSource', this.editor.getValue());
