@@ -7,26 +7,26 @@ import io.rampant.orchard.dao.UserDAO;
 import io.rampant.orchard.markdown.MarkdownService;
 import io.rampant.orchard.util.StringUtils;
 import models.Post;
+import models.Topic;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.Date;
-
 /**
  * @author jonathan
  */
 @SubjectPresent(content = "xhr")
-public class ThreadAPI extends Controller {
+public class TopicAPI extends Controller {
 	ThreadDAO threads;
 	UserDAO users;
 	MarkdownService markdown;
 	StringUtils stringUtils;
 
 	@Inject
-	public ThreadAPI(ThreadDAO threadDAO, UserDAO userDAO, MarkdownService markdownService, StringUtils sUtil) {
+	public TopicAPI(ThreadDAO threadDAO, UserDAO userDAO, MarkdownService markdownService, StringUtils sUtil) {
 		threads = threadDAO;
 		users = userDAO;
 		markdown = markdownService;
@@ -34,16 +34,16 @@ public class ThreadAPI extends Controller {
 	}
 
 	public Result create() {
-		Form<models.Thread> form = Form.form(models.Thread.class).bindFromRequest();
+		Form<Topic> form = Form.form(Topic.class).bindFromRequest();
 
 		if( form.hasErrors() || form.hasGlobalErrors() ) {
 			return badRequest(form.errorsAsJson());
 		}
 
-		models.Thread t = form.get();
+		Topic t = form.get();
 		t.slug = stringUtils.slugify(t.title);
 		t.author = users.current();
-		t.createdOn = new Date();
+		t.createdOn = new DateTime();
 		t.contentHtml = markdown.parse(t.contentSource);
 
 		threads.save(t);
@@ -51,7 +51,7 @@ public class ThreadAPI extends Controller {
 	}
 
 	public Result updatePost(String threadId, Integer postIndex) {
-		models.Thread t = threads.get(new ObjectId(threadId));
+		Topic t = threads.get(new ObjectId(threadId));
 		if( t.posts.size() <= postIndex ) {
 			// TODO: Proper JS Error here.
 			return badRequest();

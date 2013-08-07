@@ -3,6 +3,7 @@ package io.rampant.orchard.dao;
 import com.github.jmkgreen.morphia.Morphia;
 import com.github.jmkgreen.morphia.dao.BasicDAO;
 import com.mongodb.Mongo;
+import models.Topic;
 import org.bson.types.ObjectId;
 
 import javax.inject.Inject;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 /**
  * @author jonathan
  */
-public class ThreadDAO extends BasicDAO<models.Thread, ObjectId> {
+public class ThreadDAO extends BasicDAO<Topic, ObjectId> {
 
 	@Inject
 	public ThreadDAO(Mongo mongo, Morphia morphia) {
@@ -18,7 +19,7 @@ public class ThreadDAO extends BasicDAO<models.Thread, ObjectId> {
 		super(mongo, morphia, "orchard");
 	}
 
-	public models.Thread findBySlug(String slug) {
+	public Topic findBySlug(String slug) {
 		return ds.createQuery(entityClazz).field("slug").equal(slug).get();
 	}
 

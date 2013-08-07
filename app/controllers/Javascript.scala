@@ -23,9 +23,10 @@ object Javascript extends Controller {
 			implicit request =>
 				import controllers.api.routes.javascript._
 				val routes = Routes.javascriptRouter("routes")(
-					ThreadAPI.create,
-					ThreadAPI.getAll,
-					ThreadAPI.updatePost
+					TopicAPI.create,
+					TopicAPI.getAll,
+					TopicAPI.updatePost,
+					UserAPI.get
 				)
 				Ok(
 					s"define(function() { $routes; return routes.controllers; });"

@@ -10,12 +10,12 @@ import play.mvc.Result;
 /**
  * @author jonathan
  */
-public class Thread extends Controller {
+public class Topic extends Controller {
 	ThreadDAO threads;
 	UserDAO users;
 
 	@Inject
-	public Thread(ThreadDAO threadDAO, UserDAO userDAO) {
+	public Topic(ThreadDAO threadDAO, UserDAO userDAO) {
 		threads = threadDAO;
 		users = userDAO;
 	}
@@ -27,7 +27,7 @@ public class Thread extends Controller {
 
 
 	public Result get(String slug) {
-		models.Thread t = threads.findBySlug(slug);
+		models.Topic t = threads.findBySlug(slug);
 		if( null == t ) {
 			return notFound("Unknown thread.");
 		}

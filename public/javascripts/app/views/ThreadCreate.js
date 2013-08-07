@@ -27,6 +27,7 @@ define(function(require) {
 		className: 'well',
 		id: 'create-thread-form',
 		editor: null,
+		model: null,
 		ui: {
 			editor: '#editor-pane',
 			preview: '#preview-pane',
@@ -70,7 +71,7 @@ define(function(require) {
 		},
 		onSaveSuccess: function() {
 			this.trigger('alert:show', 'Success', 'Thread created.', 'success');
-			// We should redirect here.
+			window.location.replace(this.model.get('url'));
 		},
 		onSaveFail: function(xhr) {
 			var errors;

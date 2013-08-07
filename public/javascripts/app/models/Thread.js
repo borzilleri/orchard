@@ -7,7 +7,7 @@ define(function(require) {
 
 	var model = Backbone.AssociatedModel.extend({
 		url: function() {
-			return routes.api.ThreadAPI.create().url
+			return routes.api.TopicAPI.create().url
 		},
 		defaults: {
 			title: "",
@@ -37,7 +37,7 @@ define(function(require) {
 
 	var collection = Backbone.Collection.extend({
 		url: function() {
-			return routes.api.ThreadAPI.getAll().url
+			return routes.api.TopicAPI.getAll().url
 		},
 		model: model
 	});
