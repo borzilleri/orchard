@@ -1,6 +1,7 @@
 package models;
 
 import com.github.jmkgreen.morphia.annotations.Reference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.validation.Constraints;
 
 import java.util.Date;
@@ -17,7 +18,8 @@ public class Post {
 
 	@Reference(lazy = true)
 	public User modifiedBy;
-	@Reference(lazy = true)
+
+	@Reference
 	public User author;
 
 }

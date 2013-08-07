@@ -5,7 +5,11 @@ import be.objectify.deadbolt.core.models.Role;
 import be.objectify.deadbolt.core.models.Subject;
 import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
+import com.google.common.base.Strings;
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonSetter;
 import play.data.validation.Constraints;
 
 import java.util.ArrayList;
@@ -16,16 +20,38 @@ import java.util.UUID;
  * @author jonathan
  */
 @Entity("users")
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class User implements Subject {
 	public final static String AUTH_COOKIE_NAME = "tmp_orchard_cookie";
 
 	@Id
-	public ObjectId id;
+	private ObjectId id;
+	private List<String> tokens = new ArrayList<>();
 
+	@JsonProperty
 	@Constraints.Required
 	public String email;
+
+	@JsonProperty
 	public String displayName;
-	public List<String> tokens = new ArrayList<>();
+
+	@JsonProperty
+	public String getDisplayName() {
+		return Strings.isNullOrEmpty(displayName) ? email : displayName;
+	}
+
+	@JsonProperty
+	public String getId() {
+		if( null != id ) {
+			return id.toString();
+		}
+		return null;
+	}
+
+	@JsonSetter
+	public void setId(String id) {
+		this.id = new ObjectId(id);
+	}
 
 	/**
 	 * Check to see if this user is allowed to login.

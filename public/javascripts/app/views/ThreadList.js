@@ -1,24 +1,20 @@
 define(function(require) {
-	var Backbone = require("backbone");
 	var Marionette = require("backbone.marionette");
-	require("backbone.stickit");
+	var Cocktail = require('Cocktail');
+	var StickitMixin = require('lib/mixins/stickit-view');
 
-	var Item = require('./ThreadListItem');
-
-	return Backbone.Marionette.CollectionView.extend({
-		itemViewContainer: 'ul',
-		itemView: Item,
-		events: {
-		},
-		ui: {
-		},
+	var TopicView = Marionette.ItemView.extend({
+		template: '#thread-item-template',
 		bindings: {
-		},
-		initialize: function () {
-			this.on('close', this.unstickit);
-		},
-		onRender: function () {
-			this.stickit();
-		},
+
+		}
 	});
+	Cocktail.mixin(TopicView, StickitMixin);
+
+	var View = Marionette.CollectionView.extend({
+		itemViewContainer: 'ul',
+		itemView: TopicView
+	});
+
+	return View;
 });

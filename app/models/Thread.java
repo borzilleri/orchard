@@ -3,6 +3,7 @@ package models;
 import com.github.jmkgreen.morphia.annotations.Embedded;
 import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
+import io.rampant.orchard.dao.ThreadDAO;
 import org.bson.types.ObjectId;
 import play.data.validation.Constraints;
 

@@ -1,5 +1,4 @@
 define(function(require) {
-	var Backbone = require('backbone');
 	var Marionette = require('backbone.marionette');
 	var app = new Marionette.Application();
 	var Thread = require('./models/Thread');

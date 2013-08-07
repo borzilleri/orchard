@@ -31,6 +31,10 @@ public class UserDAO extends BasicDAO<User, ObjectId> {
 		tokenService = service;
 	}
 
+	public User get(String id) {
+		return get(new ObjectId(id));
+	}
+
 	public User findByEmail(String email) {
 		return ds.createQuery(entityClazz).field("email").equal(email).get();
 	}

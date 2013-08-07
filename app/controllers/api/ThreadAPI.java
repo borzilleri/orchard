@@ -1,5 +1,6 @@
 package controllers.api;
 
+import be.objectify.deadbolt.java.actions.SubjectPresent;
 import com.google.inject.Inject;
 import io.rampant.orchard.dao.ThreadDAO;
 import io.rampant.orchard.dao.UserDAO;
@@ -17,6 +18,7 @@ import java.util.Date;
 /**
  * @author jonathan
  */
+@SubjectPresent(content = "xhr")
 public class ThreadAPI extends Controller {
 	ThreadDAO threads;
 	UserDAO users;
@@ -40,6 +42,9 @@ public class ThreadAPI extends Controller {
 
 		models.Thread t = form.get();
 		t.slug = stringUtils.slugify(t.title);
+		t.author = users.current();
+		t.createdOn = new Date();
+		t.contentHtml = markdown.parse(t.contentSource);
 
 		threads.save(t);
 		return ok(Json.toJson(t));
