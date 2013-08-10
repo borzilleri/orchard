@@ -1,4 +1,4 @@
-package io.rampant.orchard.dao;
+package io.rampant.orchard.mongo.dao;
 
 import com.github.jmkgreen.morphia.Morphia;
 import com.github.jmkgreen.morphia.dao.BasicDAO;
@@ -21,6 +21,10 @@ public class ThreadDAO extends BasicDAO<Topic, ObjectId> {
 
 	public Topic findBySlug(String slug) {
 		return ds.createQuery(entityClazz).field("slug").equal(slug).get();
+	}
+
+	public Topic get(String id) {
+		return get(new ObjectId(id));
 	}
 
 }

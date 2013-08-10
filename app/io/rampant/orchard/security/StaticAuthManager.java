@@ -3,7 +3,7 @@ package io.rampant.orchard.security;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.typesafe.config.Config;
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import models.User;
 import org.joda.time.DateTime;
 

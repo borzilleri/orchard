@@ -1,4 +1,4 @@
-package io.rampant.orchard.dao;
+package io.rampant.orchard.mongo.dao;
 
 import com.github.jmkgreen.morphia.Morphia;
 import com.github.jmkgreen.morphia.dao.BasicDAO;

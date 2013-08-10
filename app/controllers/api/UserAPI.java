@@ -1,6 +1,6 @@
 package controllers.api;
 
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import io.rampant.orchard.util.JsonUtils;
 import models.User;
 import play.libs.Json;

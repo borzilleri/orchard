@@ -2,13 +2,11 @@ package controllers.api;
 
 import be.objectify.deadbolt.java.actions.SubjectPresent;
 import com.google.inject.Inject;
-import io.rampant.orchard.dao.ThreadDAO;
-import io.rampant.orchard.dao.UserDAO;
 import io.rampant.orchard.markdown.MarkdownService;
+import io.rampant.orchard.mongo.dao.ThreadDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import io.rampant.orchard.util.StringUtils;
-import models.Post;
 import models.Topic;
-import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import play.data.Form;
 import play.libs.Json;
@@ -20,57 +18,97 @@ import play.mvc.Result;
  */
 @SubjectPresent(content = "xhr")
 public class TopicAPI extends Controller {
-	ThreadDAO threads;
+	ThreadDAO topics;
 	UserDAO users;
 	MarkdownService markdown;
 	StringUtils stringUtils;
 
 	@Inject
 	public TopicAPI(ThreadDAO threadDAO, UserDAO userDAO, MarkdownService markdownService, StringUtils sUtil) {
-		threads = threadDAO;
+		topics = threadDAO;
 		users = userDAO;
 		markdown = markdownService;
 		stringUtils = sUtil;
 	}
 
+	private Topic fill(Topic t) {
+		t.slug = stringUtils.slugify(t.title);
+		t.contentHtml = markdown.parse(t.contentSource);
+		return t;
+	}
+
+	public Result list() {
+		return ok(Json.toJson(topics.find().asList()));
+	}
+
+	public Result get(String id) {
+		Topic t = topics.get(id);
+		if( t == null || t.deleted ) {
+			return notFound();
+		}
+		return ok(Json.toJson(t));
+	}
+
+	public Result getBySlug(String slug) {
+		Topic t = topics.findBySlug(slug);
+		if( t == null || t.deleted ) {
+			return notFound();
+		}
+		return ok(Json.toJson(t));
+	}
+
 	public Result create() {
 		Form<Topic> form = Form.form(Topic.class).bindFromRequest();
-
 		if( form.hasErrors() || form.hasGlobalErrors() ) {
 			return badRequest(form.errorsAsJson());
 		}
 
-		Topic t = form.get();
-		t.slug = stringUtils.slugify(t.title);
+		Topic t = fill(form.get());
 		t.author = users.current();
-		t.createdOn = new DateTime();
-		t.contentHtml = markdown.parse(t.contentSource);
-
-		threads.save(t);
+		t.createdOn = DateTime.now();
+		topics.save(t);
 		return ok(Json.toJson(t));
 	}
 
-	public Result updatePost(String threadId, Integer postIndex) {
-		Topic t = threads.get(new ObjectId(threadId));
-		if( t.posts.size() <= postIndex ) {
-			// TODO: Proper JS Error here.
-			return badRequest();
+	public Result update(String topicId) {
+		Form<Topic> form = Form.form(Topic.class).bindFromRequest();
+		if( !form.field("id").valueOr(topicId).equalsIgnoreCase(topicId) ) {
+			form.reject("id", "Form id differs from URI id.");
+		}
+		if( form.hasErrors() ) {
+			return badRequest(form.errorsAsJson());
+		}
+		Topic t = fill(form.get());
+
+		// TODO: User is admin check.
+		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+			return unauthorized("You do not have permission to edit this topic.");
 		}
 
-		Form<Post> form = Form.form(Post.class).bindFromRequest();
-		// TODO: maybe call our own validation?
-		if( form.hasErrors() || form.hasGlobalErrors() ) {
-			// TODO: Proper JS Error here.
-			return badRequest();
+		t.modifiedBy = users.current();
+		t.modifiedOn = DateTime.now();
+		topics.save(t);
+		return ok(Json.toJson(t));
+	}
+
+	public Result close(String topicId) {
+		Topic t = topics.get(topicId);
+		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+			return unauthorized("You do not have permission to close this topic.");
 		}
-
-		t.posts.set(postIndex, form.get());
-		threads.save(t);
-
-		return ok(Json.toJson(t.posts.get(postIndex)));
+		t.closed = true;
+		topics.save(t);
+		return ok(Json.toJson(t));
 	}
 
-	public Result getAll() {
-		return ok(Json.toJson(threads.find().asList()));
+	public Result destroy(String topicId) {
+		Topic t = topics.get(topicId);
+		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+			return unauthorized("You do not have permission to delete this topic.");
+		}
+		t.deleted = true;
+		topics.save(t);
+		return ok(Json.toJson(t));
 	}
+
 }

@@ -23,9 +23,12 @@ object Javascript extends Controller {
 			implicit request =>
 				import controllers.api.routes.javascript._
 				val routes = Routes.javascriptRouter("routes")(
+					TopicAPI.list,
+					TopicAPI.get,
+					TopicAPI.getBySlug,
 					TopicAPI.create,
-					TopicAPI.getAll,
-					TopicAPI.updatePost,
+					TopicAPI.update,
+
 					UserAPI.get
 				)
 				Ok(

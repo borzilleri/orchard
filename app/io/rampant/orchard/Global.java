@@ -4,7 +4,7 @@ import com.github.jmkgreen.morphia.logging.MorphiaLoggerFactory;
 import com.github.jmkgreen.morphia.logging.slf4j.SLF4JLogrImplFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import io.rampant.orchard.modules.OrchardModule;
 import io.rampant.orchard.modules.PlayModule;
 import models.User;

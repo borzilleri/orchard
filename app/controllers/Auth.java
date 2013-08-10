@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.typesafe.plugin.MailerAPI;
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import io.rampant.orchard.security.AuthManagerService;
 import models.LoginForm;
 import models.User;

@@ -4,7 +4,7 @@ import be.objectify.deadbolt.core.models.Subject;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
 import io.rampant.orchard.Global;
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import models.User;
 import play.mvc.Http;
 import play.mvc.Result;

@@ -1,7 +1,7 @@
 package controllers;
 
 import com.google.inject.Inject;
-import io.rampant.orchard.dao.UserDAO;
+import io.rampant.orchard.mongo.dao.UserDAO;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
