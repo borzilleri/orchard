@@ -8,7 +8,15 @@ define(function(require) {
 		tagName: 'li',
 		bindings: {
 			'.topic-author': 'author.displayName',
-			'.topic-title': 'title'
+			'.topic-title': {
+				observe: 'title',
+				attributes: [
+					{
+						name: 'href',
+						observe: 'url'
+					}
+				]
+			}
 		}
 	});
 	Cocktail.mixin(TopicView, StickitMixin);

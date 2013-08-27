@@ -37,7 +37,7 @@ define(function(require) {
 
 	var collection = Backbone.Collection.extend({
 		url: function() {
-			return routes.api.TopicAPI.getAll().url
+			return routes.api.TopicAPI.list().url
 		},
 		model: model
 	});
