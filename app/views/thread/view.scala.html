@@ -1,6 +1,43 @@
-@(user: User, t: models.Topic)
+@(user: User, t: models.Topic, jsonThread: String)
 
-@layouts.main("Thread: ") {
-	@t.title<br>
-	I got stuff!
+@layouts.main("Topic: " + t.title, "viewThread", jsonThread) {
+	@partials.navbar(user)
+	<div class="row-fluid">
+		<div class="span6" id="main-view"></div>
+	</div>
 }
+
+<script type="text/html" id="topic-template">
+	<div class="media">
+		<div class="media-object pull-left">
+			<img src="http://placehold.it/64x64">
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading topic-title"></h4>
+			<div class="media topic-body"></div>
+		</div>
+	</div>
+	<div id="reply-list"></div>
+	<form class="form-horizontal">
+		<div class="control-group">
+			<textarea rows="5" class="input-large" id="add-reply-text"></textarea>
+		</div>
+		<div class="alert-region"></div>
+		<button type="button" class="btn js-submit-reply btn-success">Submit</button>
+	</form>
+</script>
+
+<script type="text/html" id="reply-template">
+	<div class="media">
+		<div class="media-object pull-left">
+			<img src="http://placehold.it/64x64">
+		</div>
+		<div class="media-body">
+			<div class="media reply-body">
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="reply-form">
+</script>

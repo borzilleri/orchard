@@ -4,6 +4,9 @@ import be.objectify.deadbolt.java.actions.SubjectPresent;
 import com.google.inject.Inject;
 import io.rampant.orchard.mongo.dao.ThreadDAO;
 import io.rampant.orchard.mongo.dao.UserDAO;
+import io.rampant.orchard.util.JsonUtils;
+import org.codehaus.jackson.node.ObjectNode;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -25,12 +28,14 @@ public class Topic extends Controller {
 		return ok(views.html.thread.create.render(users.current()));
 	}
 
-
 	public Result get(String slug) {
+		ObjectNode pageData = Json.newObject();
+
 		models.Topic t = threads.findBySlug(slug);
 		if( null == t ) {
 			return notFound("Unknown thread.");
 		}
-		return ok(views.html.thread.view.render(users.current(), t));
+		pageData = JsonUtils.buildPageData(pageData, "topic", t);
+		return ok(views.html.thread.view.render(users.current(), t, pageData.toString()));
 	}
 }

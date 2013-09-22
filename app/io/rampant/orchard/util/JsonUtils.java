@@ -1,6 +1,7 @@
 package io.rampant.orchard.util;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import play.libs.Json;
 
 import java.util.HashMap;
@@ -11,9 +12,16 @@ import java.util.Map;
  */
 public class JsonUtils {
 
+	public static ObjectNode buildPageData(ObjectNode data, String key, Object value) {
+		data.put(key, Json.toJson(value));
+		return data;
+	}
+
 	public static JsonNode jsonError(String msg) {
 		Map<String, String> error = new HashMap<>();
 		error.put("error", msg);
 		return Json.toJson(error);
 	}
+
+
 }
