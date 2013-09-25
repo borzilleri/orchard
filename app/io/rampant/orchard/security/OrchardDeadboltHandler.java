@@ -6,8 +6,9 @@ import be.objectify.deadbolt.java.DynamicResourceHandler;
 import io.rampant.orchard.Global;
 import io.rampant.orchard.mongo.dao.UserDAO;
 import models.User;
+import play.libs.F;
 import play.mvc.Http;
-import play.mvc.Result;
+import play.mvc.SimpleResult;
 
 import static play.mvc.Results.forbidden;
 
@@ -17,7 +18,7 @@ import static play.mvc.Results.forbidden;
 public class OrchardDeadboltHandler implements DeadboltHandler {
 
 	@Override
-	public Result beforeAuthCheck(Http.Context context) {
+	public F.Promise<SimpleResult> beforeAuthCheck(Http.Context context) {
 		return null;
 	}
 
@@ -42,8 +43,13 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 	}
 
 	@Override
-	public Result onAuthFailure(Http.Context ctx, String content) {
-		return forbidden("You do not have access to this resource.");
+	public F.Promise<SimpleResult> onAuthFailure(Http.Context ctx, String content) {
+		return F.Promise.promise(new F.Function0<SimpleResult>() {
+			@Override
+			public SimpleResult apply() throws Throwable {
+				return forbidden("You do not have access to this resource.");
+			}
+		});
 	}
 
 	@Override

@@ -3,10 +3,7 @@ package models;
 import com.github.jmkgreen.morphia.annotations.Embedded;
 import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
-import com.github.jmkgreen.morphia.annotations.PrePersist;
 import controllers.routes;
-import io.rampant.orchard.Global;
-import io.rampant.orchard.util.StringUtils;
 import org.bson.types.ObjectId;
 import play.data.validation.Constraints;
 
