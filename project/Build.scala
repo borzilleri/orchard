@@ -9,7 +9,7 @@ object ApplicationBuild extends Build {
 
 	val appDependencies = Seq(
 		javaCore, cache,
-		//"be.objectify" %% "deadbolt-java" % "2.1-RC2",
+    "be.objectify" %% "deadbolt-java" % "2.2-RC2",
 		"com.google.inject" % "guice" % "3.0" exclude("org.sonatype.sisu.inject","cglib"),
 		"com.typesafe" %% "play-plugins-mailer" % "2.1.0",
 		"com.github.jmkgreen.morphia" % "morphia" % "1.2.3",

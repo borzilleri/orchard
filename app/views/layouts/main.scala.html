@@ -1,5 +1,4 @@
-@(title: String, jsMain: String = "noop", data: String = "{}")(content: Html)
-@import com.fasterxml.jackson.databind.JsonNode
+@(title: String, data: String = "{}")(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -10,15 +9,13 @@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/responsive.css")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
 		<script>
-			if(!window.console) {
-				(function() {
-					var noop = function() { /* no-op for IE */ };
-					window.console = { log: noop, debug: noop, warn: noop, error: noop };
-				})();
-			}
-			window.Orchard = {};
-			Orchard.jsMain = Orchard.jsMain || "@jsMain";
-			Orchard.data = @Html(data);
+		if ( ! window.console ) {
+			( function ( ) {
+			var noop = function ( ) { /* no-op for IE */ } ;
+			window.console = { log : noop, debug : noop, warn : noop, error : noop } ;
+			} ) ( ) ;
+		}
+		window.Orchard = @Html(data) ;
 		</script>
 		<script data-main="@routes.Assets.at("javascripts/app")" src="@routes.Assets.at("javascripts/vendor/require.js")"></script>
 	</head>

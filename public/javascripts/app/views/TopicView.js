@@ -1,33 +1,30 @@
 define(function(require) {
-	var Marionette = require('backbone.marionette');
-	var StickitMixin = require('lib/mixins/stickit-view');
-	var FormAlertMixin = require('lib/mixins/form-alert');
-	var Cocktail = require('Cocktail');
-	var Reply = require('../models/Post');
+	var core = require('core');
+	var ReplyForm = require('./ReplyForm');
 
-	var ReplyView = Marionette.ItemView.extend({
-		template: '#reply-template',
-		bindings: {
-
-		}
-	});
-
-	var TopicView = Marionette.CompositeView.extend({
-		template: '#topic-template',
-		itemView: ReplyView,
-		itemViewContainer: '#reply-list',
+	return core.Marionette.Layout.extend({
+		template: require('hbs!templates/topic/view'),
+		mixins: [
+			require('lib/mixins/stickit-view')
+		],
+		regions: {
+			'replies': '#replies-view',
+			'replyForm': '#reply-form-view'
+		},
 		bindings: {
 			'.topic-title': 'title',
 			'.topic-body': 'contentHtml'
-		},
-		ui: {
-			form: '.add-reply-text'
 		},
 		events: {
 			'click .js-submit-reply': 'onAddReply'
 		},
 		initialize: function() {
 			this.collection = this.model.get('posts');
+		},
+		onRender: function() {
+			this.replyForm.show(new ReplyForm({
+				model: new core.Backbone.Model()
+			}));
 		},
 		onAddReply: function(e) {
 			e.preventDefault();
@@ -40,7 +37,4 @@ define(function(require) {
 			this.ui.form.val('');
 		}
 	});
-	Cocktail.mixin(TopicView, StickitMixin, FormAlertMixin);
-
-	return TopicView;
 });
