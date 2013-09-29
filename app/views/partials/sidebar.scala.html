@@ -1,0 +1,14 @@
+@(user: User)
+@import be.objectify.deadbolt.java.views.html._
+
+<h2><a href="@routes.Application.index()">OrchardBBS</a></h2>
+
+<ul class="nav nav-tabs nav-stacked">
+@subjectPresentOr() {
+		<li><a href="@routes.Topic.create()">New Topic</a></li>
+		<li><a href="#">Edit Profile</a></li>
+		<li><a href="@routes.Auth.logout()">Logout</a></li>
+} {
+	<li></li><a href="@routes.Auth.login()" class="btn">Login</a></li>
+}
+</ul>

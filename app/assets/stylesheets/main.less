@@ -1,15 +1,39 @@
-.thread-updated {
-	color: red;
+body {
+	padding: 15px;
 }
 
-.thread-list {
+#main-view {
+	margin: 40px 10px;
+}
+
+.topic-list {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+	border-width: 0 1px;
+	border-style: solid;
+	border-color: lightgray;
 
 	li {
 		margin: 0;
-		padding: 0;
+		padding: 5px 10px;
+
+		border-bottom: 1px solid lightgray;
+		&:last-child {
+			border: none;
+		}
+
+		&:hover {
+			background-color: #eeeeee;
+		}
+
+		.topic-updated {
+			color: red;
+		}
+
+		.lead {
+			margin-bottom: 5px;
+		}
 	}
 }
 
@@ -37,10 +61,19 @@
 	}
 }
 
-
 #create-thread-form {
 	input[name='title'] {
 		font-size: 125%;
 		margin-bottom: 15px;
+	}
+}
+
+#sidebar-view {
+	h2 {
+		a {
+			text-decoration: none;
+		}
+		margin: auto;
+		text-align: center;
 	}
 }

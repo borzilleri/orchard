@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import io.rampant.orchard.mongo.dao.UserDAO;
-import play.mvc.Controller;
+import io.rampant.orchard.play.Controller;
 import play.mvc.Result;
 import views.html.index;
 
@@ -15,6 +15,7 @@ public class Application extends Controller {
 	}
 
 	public Result index() {
-		return ok(index.render("OrchardBBS", userDAO.current()));
+		addComponent("listTopics");
+		return ok(index.render("OrchardBBS", userDAO.current(), getPageData()));
 	}
 }

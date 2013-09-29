@@ -1,16 +1,11 @@
 define(function(require) {
 	require('bootstrap/button');
-	var Marionette = require('backbone.marionette');
+	require('bootstrap/tab');
+	var core = require('core');
+
+	// Deprecated, probably.
 	var marked = require('marked');
 	var ace = require("ace/ace");
-	var Cocktail = require('Cocktail');
-	var FormErrorsMixin = require('lib/mixins/form-errors');
-	var FormAlertMixin = require('lib/mixins/form-alert');
-	var StickitMixin = require('lib/mixins/stickit-view');
-	var LoadingButtonMixin = require('lib/mixins/ajax-loading-button');
-
-	require('bootstrap/tab');
-	require('backbone.stickit');
 
 	marked.setOptions({
 		gfm: true,
@@ -21,13 +16,19 @@ define(function(require) {
 		smartypants: true
 	});
 
-	var view = Marionette.ItemView.extend({
+	return core.Marionette.ItemView.extend({
 		template: '#create-thread-template',
 		tagName: 'form',
 		className: 'well',
 		id: 'create-thread-form',
 		editor: null,
 		model: null,
+		mixins: [
+			require('lib/mixins/stickit-view'),
+			require('lib/mixins/form-errors'),
+			require('lib/mixins/form-alert'),
+			require('lib/mixins/ajax-loading-button')
+		],
 		ui: {
 			editor: '#editor-pane',
 			preview: '#preview-pane',
@@ -88,7 +89,4 @@ define(function(require) {
 			this.trigger('alert:show', 'Error', 'An error occurred saving the thread.', 'error');
 		}
 	});
-	Cocktail.mixin(view, StickitMixin, LoadingButtonMixin, FormAlertMixin, FormErrorsMixin);
-
-	return view;
 });

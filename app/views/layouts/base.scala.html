@@ -1,0 +1,25 @@
+@(title: String, data: String = "{}")(content: Html)
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>@title</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/bootstrap.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/responsive.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+		<script>
+		if ( ! window.console ) {
+		( function ( ) {
+		var noop = function ( ) { /* no-op for IE */ } ;
+		window.console = { log : noop, debug : noop, warn : noop, error : noop } ;
+		} ) ( ) ;
+		}
+		window.Orchard = @Html(data) ;
+		</script>
+		<script data-main="@routes.Assets.at("javascripts/app")" src="@routes.Assets.at("javascripts/vendor/require.js")"></script>
+	</head>
+	<body>
+		@content
+	</body>
+</html>

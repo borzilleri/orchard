@@ -1,17 +1,17 @@
 define(function(require) {
 	var core = require('core');
 	var Topic = require('./models/Topic');
-	var View = require('./views/TopicView');
+	var View = require('./views/TopicCreate');
 
 	core.app.addRegions({
-		topic: '#main-view'
+		thread: '#main-view'
 	});
 
 	core.app.addInitializer(function(options) {
-		core.app.topic.show(new View({
-			model: new Topic.Model(options.data.topic)
+		core.app.thread.show(new View({
+			model: new Topic.Model
 		}));
 	});
 
-	core.app.start(window.Orchard);
+	core.app.start();
 });

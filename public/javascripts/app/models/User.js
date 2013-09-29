@@ -1,14 +1,14 @@
 define(function(require) {
-	var Backbone = require("backbone");
+	var core = require('core');
 
-	var model = Backbone.Model.extend({
+	var model = core.Backbone.Model.extend({
 		defaults: {
 			email: '',
 			displayName: ''
 		}
 	});
 
-	var collection = Backbone.Collection.extend({
+	var collection = core.Backbone.Collection.extend({
 		model: model
 	});
 

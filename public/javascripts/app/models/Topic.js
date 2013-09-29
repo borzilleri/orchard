@@ -1,11 +1,12 @@
 define(function(require) {
-	var Backbone = require("backbone");
+	var core = require('core');
 	require('backbone-associations');
+
 	var routes = require('/js/routes/thread.js');
 	var Reply = require('./Reply');
 	var User = require('./User');
 
-	var model = Backbone.AssociatedModel.extend({
+	var model = core.Backbone.AssociatedModel.extend({
 		url: function() {
 			return routes.api.TopicAPI.create().url
 		},
@@ -22,12 +23,12 @@ define(function(require) {
 		},
 		relations: [
 			{
-				type: Backbone.One,
+				type: core.Backbone.One,
 				key: 'author',
 				relatedModel: User.Model
 			},
 			{
-				type: Backbone.Many,
+				type: core.Backbone.Many,
 				key: 'replies',
 				relatedModel: Reply.Model,
 				collectionType: Reply.Collection
@@ -35,7 +36,7 @@ define(function(require) {
 		]
 	});
 
-	var collection = Backbone.Collection.extend({
+	var collection = core.Backbone.Collection.extend({
 		url: function() {
 			return routes.api.TopicAPI.list().url
 		},

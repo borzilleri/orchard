@@ -22,7 +22,8 @@ public class Topic extends Controller {
 
 	@SubjectPresent
 	public Result create() {
-		return ok(views.html.thread.create.render(users.current()));
+		addComponent("createTopic");
+		return ok(views.html.thread.create.render(users.current(), getPageData()));
 	}
 
 	public Result get(String slug) {

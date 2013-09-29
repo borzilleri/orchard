@@ -1,35 +1,29 @@
-@(user: User)
-@layouts.main("Create Thread", "createThread") {
-	@partials.navbar(user, "createThread")
-	<div class="container">
-		<div class="row-fluid">
-			<div class="span9 offset1" id="main-view"></div>
+@(user: User, data: String = "{}")
+@layouts.main(user, "Create Thread", data) {
+}
+
+<script type="text/html" id="create-thread-template">
+	<div class="control-group">
+		<input class="input-block-level" name="title" placeholder="thread title&hellip;">
+		<div class="help-block"></div>
+	</div>
+	<div class="control-group">
+		<ul class="nav nav-tabs post-tabs">
+			<li class="active"><a href="#editor-pane" class="show-editor" data-toggle="tab">
+				Write</a></li>
+			<li><a href="#preview-pane" class="show-preview" data-toggle="tab">
+				Preview</a></li>
+		</ul>
+		<div class="tab-content post-tab-content">
+			<div id="editor-pane" class="tab-pane active editor-pane" name="contentSource"></div>
+			<div id="preview-pane" class="tab-pane preview-pane"></div>
 		</div>
+		<div class="help-block"></div>
 	</div>
 
-	<script type="text/html" id="create-thread-template">
-		<div class="control-group">
-			<input class="input-block-level" name="title" placeholder="thread title&hellip;">
-			<div class="help-block"></div>
-		</div>
-		<div class="control-group">
-			<ul class="nav nav-tabs post-tabs">
-				<li class="active"><a href="#editor-pane" class="show-editor" data-toggle="tab">
-					Write</a></li>
-				<li><a href="#preview-pane" class="show-preview" data-toggle="tab">
-					Preview</a></li>
-			</ul>
-			<div class="tab-content post-tab-content">
-				<div id="editor-pane" class="tab-pane active editor-pane" name="contentSource"></div>
-				<div id="preview-pane" class="tab-pane preview-pane"></div>
-			</div>
-			<div class="help-block"></div>
-		</div>
-
-		<div class="form-actions">
-			<button type="submit" class="pull-right btn btn-success post-submit" data-loading-text=" Posting...">
-				 Submit</button>
-		</div>
-		<div class="alert-region"></div>
-	</script>
-}
+	<div class="form-actions">
+		<button type="submit" class="pull-right btn btn-success post-submit" data-loading-text=" Posting...">
+			 Submit</button>
+	</div>
+	<div class="alert-region"></div>
+</script>

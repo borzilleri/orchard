@@ -1,25 +1,4 @@
-@(title: String, user: User)
+@(title: String, user: User, data: String = "{}")
 
-@layouts.main(title) {
-	@partials.navbar(user, "listThreads")
-	<div class="container">
-		<div class="row">
-			<div class="span6">
-				<div id="thread-list"></div>
-			</div>
-		</div>
-	</div>
+@layouts.main(user, title, data) {
 }
-
-<script id="thread-item-template" type="text/html">
-	<div>
-		<span class="pull-right">by <span class="topic-author"></span></span>
-		<h4><span class="icon-exclamation-sign thread-updated"></span>
-			<a class="topic-title"></a></h4>
-	</div>
-	<div>
-		last post on <span class="thread-updated-on">
-		0000-00-00 00:00:00 PDT</span>
-		by <span class="thread-updated-by">Comment Author</span>
-	</div>
-</script>

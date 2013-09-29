@@ -1,5 +1,5 @@
 @(loginForm: play.data.Form[models.LoginForm])
-@layouts.main("Orchard Login", "login") {
+@layouts.base("Orchard Login", "login") {
 	<div class="container login-page">
 		<div class="row">
 		@helper.form(controllers.routes.Auth.sendToken, 'id -> "loginForm", 'class -> "span5 offset2 form-horizontal") {

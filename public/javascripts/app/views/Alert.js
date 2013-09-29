@@ -1,12 +1,13 @@
 define(function(require) {
 	require('bootstrap/alert');
-	var _ = require('underscore');
-	var Cocktail = require('Cocktail');
-	var Marionette = require('backbone.marionette');
-	var StickitMixin = require('lib/mixins/stickit-view');
+	var core = require('core');
+	var _ = core._;
 
-	var View = Marionette.ItemView.extend({
+	return core.Marionette.ItemView.extend({
 		template: _.template('<h4 class="alert-title"></h4><div class="alert-message"></div>'),
+		mixins: [
+			require('lib/mixins/stickit-view')
+		],
 		bindings: {
 			'.alert-title': 'title',
 			'.alert-message': 'message'
@@ -33,7 +34,4 @@ define(function(require) {
 			this.$el.alert('close');
 		}
 	});
-
-	Cocktail.mixin(View, StickitMixin);
-	return View;
 });
