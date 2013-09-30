@@ -1,7 +1,6 @@
 require.config({
 	baseUrl: '/assets/javascripts/vendor',
 	paths: {
-		'codemirror': 'codemirror/lib/codemirror',
 		'codemirror-md': 'codemirror/mode/markdown/markdown',
 		app: '../app',
 		lib: '../lib',
@@ -9,6 +8,7 @@ require.config({
 		templates: '../../handlebars'
 	},
 	packages: [
+		{ name: 'codemirror', location: 'codemirror', main: 'lib/codemirror' },
 		{ name: 'hbs', location: 'require-handlebars-plugin', main: 'hbs' },
 		{ name: 'backbone', location: 'backbone', main: '../../lib/backbone' },
 		{ name: 'backbone.stickit', location: 'backbone', main: 'backbone.stickit' },
@@ -18,16 +18,16 @@ require.config({
 		{ name: 'underscore', location: 'lodash', main: 'lodash.underscore' }
 	],
 	shim: {
+		'codemirror': {
+			exports: 'CodeMirror'
+		},
 		'codemirror-md': {
 			deps: ['codemirror'],
 			exports: 'CodeMirror'
 		},
-		"backbone/backbone": {
+		'backbone/backbone': {
 			deps: ['underscore', 'jquery'],
 			exports: 'Backbone'
-		},
-		"codemirror": {
-			exports: "CodeMirror"
 		}
 	},
 	hbs: {

@@ -1,3 +1,4 @@
+define([ 'codemirror' ], function(CodeMirror) {
 (function() {
   "use strict";
 
@@ -28,3 +29,4 @@
     cm.refresh();
   }
 })();
+});

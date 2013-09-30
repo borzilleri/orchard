@@ -1,17 +1,34 @@
 define(function(require) {
 	var core = require('core');
-	var Marionette = core.Marionette;
 	require('lib/stickit.codemirror');
 
-	return Marionette.ItemView.extend({
+	return core.Marionette.ItemView.extend({
 		template: require('hbs!templates/form/reply'),
 		mixins: [
-			require('lib/mixins/stickit-view')
+			require('lib/mixins/stickit-view'),
+			require('lib/mixins/form-alert')
 		],
 		bindings: {
 			'[name="reply-text"]': {
-				observe: 'text'
+				observe: 'text',
+				codemirror: {
+					height: 150,
+					theme: 'cobalt',
+					placeholder: 'Reply to this topic...'
+				}
 			}
+		},
+		events: {
+			'submit form': 'onReply',
+			'click .save': 'onReply'
+		},
+		onReply: function(e) {
+			e.preventDefault();
+			this.model.save()
+				.done('onReplySaved');
+		},
+		onReplySaved: function() {
+			core.events.trigger("reply:added", this.model);
 		}
 	});
 });

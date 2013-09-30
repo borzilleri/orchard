@@ -1,11 +1,7 @@
 <form class="form-horizontal">
-	<textarea class="codemirror" name="reply-text"></textarea>
+	<div class="alert-region"></div>
+	<textarea class="codemirror input-block-level" name="reply-text"></textarea>
+	<div class="form-actions">
+		<button type="button" class="btn save btn-success" data-loading-text="Saving...">Submit</button>
+	</div>
 </form>
-
-<script type="text/html">
-	<form class="form-horizontal">
-		<div id="editor-view"></div>
-		<div class="alert-region"></div>
-		<button type="button" class="btn js-submit-reply btn-success">Submit</button>
-	</form>
-</script>
