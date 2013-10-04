@@ -17,6 +17,8 @@ import views.html.auth.login;
 import views.html.auth.tokenSentEmailHtml;
 import views.html.auth.tokenSentEmailText;
 
+import java.util.Map;
+
 import static play.data.Form.form;
 
 /**
@@ -32,6 +34,23 @@ public class Auth extends Controller {
 		this.mailer = mailer;
 		this.tokenManager = tokenManagerService;
 		this.userDAO = userDAO;
+	}
+
+	public Result admin() {
+		return ok(views.html.auth.admin.render(null));
+	}
+
+	public Result adminLogin() {
+		Map<String,String[]> data = request().body().asFormUrlEncoded();
+		if( !data.containsKey("password") || data.get("password").length == 0) {
+			return badRequest(views.html.auth.admin.render(null));
+		}
+		String password = data.get("password")[0];
+
+		if( !Play.application().configuration().getString("auth.admin.password").equalsIgnoreCase(password) ) {
+			return unauthorized(views.html.auth.admin.render("Invalid Password"));
+		}
+		return ok();
 	}
 
 	public Result login() {
@@ -71,7 +90,8 @@ public class Auth extends Controller {
 	}
 
 	public Result logout() {
-		response().discardCookie(User.AUTH_COOKIE_NAME);
+		response().discardCookie(Play.application().configuration()
+			.getString("auth.cookie.name"));
 		return redirect(routes.Application.index());
 	}
 
@@ -101,7 +121,8 @@ public class Auth extends Controller {
 			}
 
 			// Set it in a cookie
-			response().setCookie(User.AUTH_COOKIE_NAME, appToken, maxAge);
+			response().setCookie(Play.application().configuration()
+				.getString("auth.cookie.name"), appToken, maxAge);
 
 			tokenManager.resolveAuthToken(authToken);
 

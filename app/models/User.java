@@ -22,8 +22,6 @@ import java.util.UUID;
 @Entity("users")
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class User implements Subject {
-	public final static String AUTH_COOKIE_NAME = "tmp_orchard_cookie";
-
 	@Id
 	private ObjectId id;
 	private List<String> tokens = new ArrayList<>();

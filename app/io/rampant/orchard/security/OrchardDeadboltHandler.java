@@ -5,7 +5,7 @@ import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
 import io.rampant.orchard.Global;
 import io.rampant.orchard.mongo.dao.UserDAO;
-import models.User;
+import play.Play;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.SimpleResult;
@@ -24,8 +24,11 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 
 	@Override
 	public Subject getSubject(Http.Context context) {
-		Http.Cookie c = context.request().cookie(User.AUTH_COOKIE_NAME);
-		// No Cookie, no auth'd user.
+		String cookieName = Play.application().configuration()
+			.getString("auth.cookie.name");
+		Http.Cookie c = context.request().cookie(cookieName);
+
+		// No Cookie, no authenticated user.
 		if( null != c ) {
 			String appToken = c.value();
 

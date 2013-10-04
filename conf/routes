@@ -5,6 +5,8 @@ GET           /login        @controllers.Auth.login()
 POST          /login        @controllers.Auth.sendToken()
 GET           /logout        @controllers.Auth.logout()
 GET           /login/:authToken        @controllers.Auth.authenticate(authToken: String)
+GET           /admin        @controllers.Auth.admin()
+POST          /admin        @controllers.Auth.adminLogin()
 
 GET           /topic/:slug        @controllers.Topic.get(slug: String)
 GET           /create-topic        @controllers.Topic.create()
