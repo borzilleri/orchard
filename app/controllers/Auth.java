@@ -57,6 +57,11 @@ public class Auth extends Controller {
 		return redirect(routes.Application.index());
 	}
 
+	public Result adminLogout() {
+		Http.Context.current().session().remove(Play.application().configuration().getString("auth.admin.sessionkey"));
+		return ok();
+	}
+
 	public Result login() {
 		return ok(views.html.auth.login.render(form(LoginForm.class)));
 	}

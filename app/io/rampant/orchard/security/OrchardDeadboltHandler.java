@@ -26,13 +26,14 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 	@Override
 	public Subject getSubject(Http.Context context) {
 		Configuration conf = Play.application().configuration();
+		UserDAO dao = Global.getInjector().getInstance(UserDAO.class);
+
 		/**
 		 * First, check to see if we have an "admin" session.
 		 */
 		Object isAdmin = context.session().get(conf.getString("auth.admin.sessionkey"));
 		if( null != isAdmin ) {
-
-
+			return dao.findByEmail("admin");
 		}
 
 		Http.Cookie c = context.request().cookie(conf.getString("auth.cookie.name"));
@@ -47,7 +48,6 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 			 * on to the Guice injector. So we'll just grab our injector and get our
 			 * instance manually.
 			 */
-			UserDAO dao = Global.getInjector().getInstance(UserDAO.class);
 			return dao.findByToken(appToken);
 		}
 		return null;
