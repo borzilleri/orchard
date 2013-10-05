@@ -5,6 +5,7 @@ import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
 import io.rampant.orchard.Global;
 import io.rampant.orchard.mongo.dao.UserDAO;
+import play.Configuration;
 import play.Play;
 import play.libs.F;
 import play.mvc.Http;
@@ -24,10 +25,17 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 
 	@Override
 	public Subject getSubject(Http.Context context) {
-		String cookieName = Play.application().configuration()
-			.getString("auth.cookie.name");
-		Http.Cookie c = context.request().cookie(cookieName);
+		Configuration conf = Play.application().configuration();
+		/**
+		 * First, check to see if we have an "admin" session.
+		 */
+		Object isAdmin = context.session().get(conf.getString("auth.admin.sessionkey"));
+		if( null != isAdmin ) {
 
+
+		}
+
+		Http.Cookie c = context.request().cookie(conf.getString("auth.cookie.name"));
 		// No Cookie, no authenticated user.
 		if( null != c ) {
 			String appToken = c.value();

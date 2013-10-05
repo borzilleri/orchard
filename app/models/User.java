@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
 import com.google.common.base.Strings;
+import io.rampant.orchard.security.Roles;
 import org.bson.types.ObjectId;
 import play.data.validation.Constraints;
 
@@ -25,6 +26,8 @@ public class User implements Subject {
 	@Id
 	private ObjectId id;
 	private List<String> tokens = new ArrayList<>();
+
+	public List<Roles> roles = new ArrayList<>();
 
 	@JsonProperty
 	@Constraints.Required
@@ -70,7 +73,7 @@ public class User implements Subject {
 
 	@Override
 	public List<? extends Role> getRoles() {
-		return new ArrayList<>();
+		return roles;
 	}
 
 	@Override

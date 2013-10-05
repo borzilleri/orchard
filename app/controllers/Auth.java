@@ -12,6 +12,7 @@ import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import views.html.auth.login;
 import views.html.auth.tokenSentEmailHtml;
@@ -50,7 +51,10 @@ public class Auth extends Controller {
 		if( !Play.application().configuration().getString("auth.admin.password").equalsIgnoreCase(password) ) {
 			return unauthorized(views.html.auth.admin.render("Invalid Password"));
 		}
-		return ok();
+
+		// FIXME: Inject this.
+		Http.Context.current().session().put(Play.application().configuration().getString("auth.admin.sessionkey"), "true");
+		return redirect(routes.Application.index());
 	}
 
 	public Result login() {

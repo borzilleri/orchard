@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 import io.rampant.orchard.mongo.dao.UserDAO;
 import io.rampant.orchard.modules.OrchardModule;
 import io.rampant.orchard.modules.PlayModule;
+import io.rampant.orchard.security.Roles;
 import models.User;
 import play.Application;
 import play.GlobalSettings;
@@ -34,10 +35,12 @@ public class Global extends GlobalSettings {
 		 * keep it. meh.
 		 */
 		UserDAO dao = injector.getInstance(UserDAO.class);
-		User user = dao.findByEmail("jonathan@borzilleri.net");
+		User user = dao.findByEmail("admin");
 		if( null == user ) {
 			user = new User();
-			user.email = "jonathan@borzilleri.net";
+			user.email = "admin";
+			user.displayName = "Administrator";
+			user.roles.add(Roles.ADMIN);
 			dao.save(user);
 		}
 	}
