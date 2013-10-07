@@ -42,8 +42,10 @@ require(['core', 'bootstrap/dropdown'], function(core) {
 	}
 
 	core.$(function() {
-		core._(window.Orchard.components).each(function(component) {
-			require(['app/' + component]);
-		});
+		require(_(window.Orchard.components).map(function(component){return 'app/' + component;}),
+			function() {
+				core.app.start(window.Orchard);
+			}
+		);
 	});
 });

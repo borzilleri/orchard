@@ -12,6 +12,4 @@ define(function(require) {
 			model: new Topic.Model
 		}));
 	});
-
-	core.app.start();
 });

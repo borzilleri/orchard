@@ -15,6 +15,4 @@ define(function(require) {
 			}));
 		})
 	});
-
-	core.app.start();
 });

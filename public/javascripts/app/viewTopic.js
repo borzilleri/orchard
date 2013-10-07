@@ -12,6 +12,4 @@ define(function(require) {
 			model: new Topic.Model(options.data.topic)
 		}));
 	});
-
-	core.app.start(window.Orchard);
 });
