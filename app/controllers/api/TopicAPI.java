@@ -57,6 +57,7 @@ public class TopicAPI extends Controller {
 		return ok(Json.toJson(t));
 	}
 
+	//@Restrict(@Group("POST"))
 	public Result create() {
 		Form<Topic> form = Form.form(Topic.class).bindFromRequest();
 		if( form.hasErrors() || form.hasGlobalErrors() ) {
@@ -70,6 +71,9 @@ public class TopicAPI extends Controller {
 		return ok(Json.toJson(t));
 	}
 
+	/**
+	 * TODO: Add admin/creator check as deadbolt restriction?
+	 */
 	public Result update(String topicId) {
 		Form<Topic> form = Form.form(Topic.class).bindFromRequest();
 		if( !form.field("id").valueOr(topicId).equalsIgnoreCase(topicId) ) {
@@ -80,8 +84,8 @@ public class TopicAPI extends Controller {
 		}
 		Topic t = fill(form.get());
 
-		// TODO: User is admin check.
-		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+		if( !users.current().isAdmin() &&
+				!t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
 			return unauthorized("You do not have permission to edit this topic.");
 		}
 
@@ -93,7 +97,7 @@ public class TopicAPI extends Controller {
 
 	public Result close(String topicId) {
 		Topic t = topics.get(topicId);
-		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+		if( !users.current().isAdmin() && !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
 			return unauthorized("You do not have permission to close this topic.");
 		}
 		t.closed = true;
@@ -103,7 +107,7 @@ public class TopicAPI extends Controller {
 
 	public Result destroy(String topicId) {
 		Topic t = topics.get(topicId);
-		if( !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
+		if( !users.current().isAdmin() && !t.author.getId().equalsIgnoreCase(users.current().getId()) ) {
 			return unauthorized("You do not have permission to delete this topic.");
 		}
 		t.deleted = true;
