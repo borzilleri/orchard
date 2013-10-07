@@ -18,6 +18,19 @@ object Javascript extends Controller {
 		}
 	}
 
+	def userRoutes = Cached("user-routes") {
+		Action {
+			implicit request =>
+				import controllers.routes.javascript._
+				val routes = Routes.javascriptRouter("routes")(
+					Auth.adminLogout
+				)
+				Ok(
+					s"define(function() { $routes; return routes.controllers; });"
+				).as(JAVASCRIPT)
+		}
+	}
+
 	def threadRoutes = Cached("thread-routes") {
 		Action {
 			implicit request =>
@@ -29,6 +42,9 @@ object Javascript extends Controller {
 					TopicAPI.create,
 					TopicAPI.update,
 
+					ReplyAPI.create,
+					ReplyAPI.update,
+
 					UserAPI.get
 				)
 				Ok(
@@ -36,5 +52,4 @@ object Javascript extends Controller {
 				).as(JAVASCRIPT)
 		}
 	}
-
 }

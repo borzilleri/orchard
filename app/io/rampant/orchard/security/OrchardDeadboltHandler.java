@@ -25,17 +25,8 @@ public class OrchardDeadboltHandler implements DeadboltHandler {
 
 	@Override
 	public Subject getSubject(Http.Context context) {
-		Configuration conf = Play.application().configuration();
 		UserDAO dao = Global.getInjector().getInstance(UserDAO.class);
-
-		/**
-		 * First, check to see if we have an "admin" session.
-		 */
-		Object isAdmin = context.session().get(conf.getString("auth.admin.sessionkey"));
-		if( null != isAdmin ) {
-			return dao.findByEmail("admin");
-		}
-
+		Configuration conf = Play.application().configuration();
 		Http.Cookie c = context.request().cookie(conf.getString("auth.cookie.name"));
 		// No Cookie, no authenticated user.
 		if( null != c ) {

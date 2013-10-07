@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import com.typesafe.plugin.MailerAPI;
 import io.rampant.orchard.mongo.dao.UserDAO;
@@ -8,9 +9,13 @@ import models.LoginForm;
 import models.User;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+import play.Configuration;
 import play.Logger;
 import play.Play;
 import play.data.Form;
+import play.libs.F;
+import play.libs.Json;
+import play.libs.WS;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -42,8 +47,8 @@ public class Auth extends Controller {
 	}
 
 	public Result adminLogin() {
-		Map<String,String[]> data = request().body().asFormUrlEncoded();
-		if( !data.containsKey("password") || data.get("password").length == 0) {
+		Map<String, String[]> data = request().body().asFormUrlEncoded();
+		if( !data.containsKey("password") || data.get("password").length == 0 ) {
 			return badRequest(views.html.auth.admin.render(null));
 		}
 		String password = data.get("password")[0];
@@ -53,12 +58,12 @@ public class Auth extends Controller {
 		}
 
 		// FIXME: Inject this.
-		Http.Context.current().session().put(Play.application().configuration().getString("auth.admin.sessionkey"), "true");
+		//Http.Context.current().session().put(Play.application().configuration().getString("auth.admin.sessionkey"), "true");
 		return redirect(routes.Application.index());
 	}
 
 	public Result adminLogout() {
-		Http.Context.current().session().remove(Play.application().configuration().getString("auth.admin.sessionkey"));
+		//Http.Context.current().session().remove(Play.application().configuration().getString("auth.admin.sessionkey"));
 		return ok();
 	}
 
@@ -66,41 +71,59 @@ public class Auth extends Controller {
 		return ok(views.html.auth.login.render(form(LoginForm.class)));
 	}
 
-	public Result sendToken() {
-		Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
+	public F.Promise<Result> sendToken() {
+		final Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
 
 		if( loginForm.hasErrors() ) {
-			return badRequest(login.render(loginForm));
+			return F.Promise.promise(new F.Function0<Result>() {
+				@Override
+				public Result apply() throws Throwable {
+					return badRequest(login.render(loginForm));
+				}
+			});
 		}
 		else {
 			LoginForm loginUser = loginForm.get();
 			User user = userDAO.findByEmail(loginForm.get().email);
 			if( null == user || !user.canLogin() ) {
 				loginForm.reject("email", "Invalid email address.");
-				return forbidden(login.render(loginForm));
+				return F.Promise.promise(new F.Function0<Result>() {
+					@Override
+					public Result apply() throws Throwable {
+						return forbidden(login.render(loginForm));
+					}
+				});
 			}
 			String authToken = tokenManager.generateAuthToken(loginUser.email, loginUser.rememberMe);
 
-			/**
-			 * TODO: Maybe this should be abstracted somewhere?
-			 */
-			mailer.setSubject("Orchard BBS Login Link");
-			mailer.addRecipient(loginForm.get().email);
-			mailer.addFrom(Play.application().configuration().getString("mailer.from"));
-			// TODO: Make this SSL Aware
+			// FIXME: Dep-Inject this.
+			Configuration conf = Play.application().configuration();
 			String loginUrl = "http://" + request().host() + "/login/" + authToken;
-			mailer.send(
-				tokenSentEmailText.render(loginUrl).body(),
-				tokenSentEmailHtml.render(loginUrl).body()
-			);
+			// FIXME: Abstract this email sending out somewhere.
+			ObjectNode mailData = Json.newObject();
+			mailData.put("From", conf.getString("mailer.from"));
+			mailData.put("To", loginForm.get().email);
+			// TODO: Date & Time Here.
+			mailData.put("Subject", "Orchard BBS Login Link");
+			mailData.put("HtmlBody", tokenSentEmailHtml.render(loginUrl).body());
+			mailData.put("TextBody", tokenSentEmailText.render(loginUrl).body());
+			F.Promise<WS.Response> mailResponse = WS.url(conf.getString("postmark.api.url"))
+					.setHeader(conf.getString("postmark.api.header"), conf.getString("postmark.api.key"))
+					.post(mailData);
 
-			return ok(views.html.auth.tokenSent.render(loginForm.get().email));
+			return mailResponse.map(new F.Function<WS.Response, Result>() {
+				@Override
+				public Result apply(WS.Response response) throws Throwable {
+					Logger.debug(response.getStatus() + " " + response.getStatusText());
+					return ok(views.html.auth.tokenSent.render(loginForm.get().email));
+				}
+			});
 		}
 	}
 
 	public Result logout() {
 		response().discardCookie(Play.application().configuration()
-			.getString("auth.cookie.name"));
+				.getString("auth.cookie.name"));
 		return redirect(routes.Application.index());
 	}
 
@@ -131,7 +154,7 @@ public class Auth extends Controller {
 
 			// Set it in a cookie
 			response().setCookie(Play.application().configuration()
-				.getString("auth.cookie.name"), appToken, maxAge);
+					.getString("auth.cookie.name"), appToken, maxAge);
 
 			tokenManager.resolveAuthToken(authToken);
 

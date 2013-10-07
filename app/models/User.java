@@ -54,6 +54,10 @@ public class User implements Subject {
 		this.id = new ObjectId(id);
 	}
 
+	public boolean isAdmin() {
+		return roles.contains(Roles.ADMIN);
+	}
+
 	/**
 	 * Check to see if this user is allowed to login.
 	 * <p/>

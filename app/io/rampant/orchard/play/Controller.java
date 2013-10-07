@@ -23,6 +23,8 @@ public class Controller extends play.mvc.Controller {
 	}
 
 	protected String getPageData() {
+		//components.add("adminBar");
+
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("components", components);
 		data.put("data", pageData);
