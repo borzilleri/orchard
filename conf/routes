@@ -18,6 +18,8 @@ GET           /api/topics/slug/:slug        @controllers.api.TopicAPI.getBySlug(
 POST          /api/topics        @controllers.api.TopicAPI.create()
 PUT           /api/topics/:id        @controllers.api.TopicAPI.update(id: String)
 PUT           /api/topics/:id/close        @controllers.api.TopicAPI.close(id: String)
+POST          /api/topics/:id        @controllers.api.ReplyAPI.create(id: String)
+PUT           /api/topics/:id/:index        @controllers.api.ReplyAPI.update(id: String, index: Integer)
 DELETE        /api/topics/:id        @controllers.api.TopicAPI.destroy(id: String)
 
 GET           /api/users/:id        @controllers.api.UserAPI.get(id: String)

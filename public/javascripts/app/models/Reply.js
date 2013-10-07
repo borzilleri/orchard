@@ -1,21 +1,36 @@
 define(function(require) {
-	var Backbone = require("backbone");
+	var core = require('core');
 	require('backbone-associations');
 	var routes = require('/js/routes/thread.js');
 
-	var model = Backbone.Model.extend({
+	var User = require('./User');
+
+	var model = core.Backbone.AssociatedModel.extend({
 		url: function() {
-			return routes.api.TopicAPI.create().url
+			if( this.get('index') ) {
+				return routes.api.ReplyAPI.update(this.get('topicId'), this.get('index')).url;
+			}
+			else {
+				return routes.api.ReplyAPI.create(this.get('topicId')).url;
+			}
 		},
 		defaults: {
 			contentSource: '',
 			contentHtml: null,
 			createdOn: null,
-			modifiedOn: null
-		}
+			modifiedOn: null,
+			author: null
+		},
+		relations: [
+			{
+				type: core.Backbone.One,
+				key: 'author',
+				relatedModel: User.Model
+			}
+		]
 	});
 
-	var collection = Backbone.Collection.extend({
+	var collection = core.Backbone.Collection.extend({
 		model: model
 	});
 

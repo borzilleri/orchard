@@ -21,11 +21,9 @@ define(function(require) {
 		}
 	});
 
-	var View = core.Marionette.CollectionView.extend({
+	return core.Marionette.CollectionView.extend({
 		tagName: 'ul',
 		className: 'topic-list',
 		itemView: TopicView
 	});
-
-	return View;
 });

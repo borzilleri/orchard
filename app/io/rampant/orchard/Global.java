@@ -9,14 +9,29 @@ import io.rampant.orchard.modules.OrchardModule;
 import io.rampant.orchard.modules.PlayModule;
 import io.rampant.orchard.security.Roles;
 import models.User;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
+import play.mvc.Action;
+import play.mvc.Http;
+
+import java.lang.reflect.Method;
 
 /**
  * @author Jonathan Bozilleri
  */
 public class Global extends GlobalSettings {
 	static Injector injector;
+
+	@Override
+	public Action onRequest(Http.Request request, Method actionMethod) {
+		final DateTime start = DateTime.now();
+		Action result = super.onRequest(request, actionMethod);
+		Logger.info("[" + new Period(start, DateTime.now()).getMillis() + "ms] " + request.method() + " " + request.uri());
+		return result;
+	}
 
 	@Override
 	public void beforeStart(Application application) {
@@ -41,6 +56,15 @@ public class Global extends GlobalSettings {
 			user.email = "admin";
 			user.displayName = "Administrator";
 			user.roles.add(Roles.ADMIN);
+			dao.save(user);
+		}
+		user = dao.findByEmail("jonathan@borzilleri.net");
+		if( null == user ) {
+			user = new User();
+			user.email = "jonathan@borzilleri.net";
+			user.displayName = "Jonathan";
+			user.roles.add(Roles.ADMIN);
+			user.roles.add(Roles.POST);
 			dao.save(user);
 		}
 	}

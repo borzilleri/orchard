@@ -7,6 +7,7 @@ import controllers.routes;
 import org.bson.types.ObjectId;
 import play.data.validation.Constraints;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class Topic extends Post {
 	public boolean closed = false;
 
 	@Embedded
-	public List<Post> posts;
+	public List<Reply> replies = new ArrayList<>();
 
 	public void setId(String id) {
 		this.id = new ObjectId(id);
@@ -41,8 +42,8 @@ public class Topic extends Post {
 	}
 
 	public String getLastAuthor() {
-		return null == posts ? author.getDisplayName() :
-		       posts.get(0).author.getDisplayName();
+		return replies.size() == 0 ? author.getDisplayName() :
+		       replies.get(0).author.getDisplayName();
 	}
 
 }

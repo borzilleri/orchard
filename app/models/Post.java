@@ -4,9 +4,6 @@ import com.github.jmkgreen.morphia.annotations.PostLoad;
 import com.github.jmkgreen.morphia.annotations.PrePersist;
 import com.github.jmkgreen.morphia.annotations.Reference;
 import com.github.jmkgreen.morphia.annotations.Transient;
-import io.rampant.orchard.Global;
-import io.rampant.orchard.markdown.MarkdownService;
-import io.rampant.orchard.util.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import play.data.validation.Constraints;
@@ -21,6 +18,10 @@ public class Post {
 	private String createDateTZ;
 	private Date modifiedDate;
 	private String modifiedDateTZ;
+	@Transient
+	public DateTime createdOn;
+	@Transient
+	public DateTime modifiedOn;
 
 	@Reference
 	public User author;
@@ -29,10 +30,6 @@ public class Post {
 	public String contentSource;
 	public String contentHtml;
 
-	@Transient
-	public DateTime createdOn;
-	@Transient
-	public DateTime modifiedOn;
 	@Reference(lazy = true)
 	public User modifiedBy;
 

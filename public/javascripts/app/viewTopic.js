@@ -8,8 +8,11 @@ define(function(require) {
 	});
 
 	core.app.addInitializer(function(options) {
-		core.app.topic.show(new View({
-			model: new Topic.Model(options.data.topic)
-		}));
+		var model = new Topic.Model(options.data.topic);
+		model.get('replies').each(function(reply, index) {
+			reply.set('topicId', this.id);
+			reply.set('index',index);
+		}, model);
+		core.app.topic.show(new View({model: model}));
 	});
 });
