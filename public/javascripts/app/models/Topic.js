@@ -1,6 +1,7 @@
 define(function(require) {
 	var core = require('core');
 	require('backbone-associations');
+	var moment = require('moment');
 
 	var routes = require('/js/routes/thread.js');
 	var Reply = require('./Reply');
@@ -31,9 +32,19 @@ define(function(require) {
 				type: core.Backbone.Many,
 				key: 'replies',
 				relatedModel: Reply.Model,
-				collectionType: Reply.Collection
+				collectionType: Reply.Collection,
+				options: {
+					parse: true
+				}
 			}
-		]
+		],
+		parse: function(response) {
+			response.createdOn = moment(response.createdOn.millis);
+			if( response.modifiedOn ) {
+				response.modifiedOn = moment(response.modifiedOn.millis);
+			}
+			return response;
+		}
 	});
 
 	var collection = core.Backbone.Collection.extend({

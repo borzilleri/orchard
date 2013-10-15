@@ -1,6 +1,7 @@
 define(function(require) {
 	var core = require('core');
 	require('backbone-associations');
+	var moment = require('moment');
 	var routes = require('/js/routes/thread.js');
 
 	var User = require('./User');
@@ -27,7 +28,14 @@ define(function(require) {
 				key: 'author',
 				relatedModel: User.Model
 			}
-		]
+		],
+		parse: function(response, options) {
+			response.createdOn = moment(response.createdOn.millis);
+			if( response.modifiedOn ) {
+				response.modifiedOn = moment(response.modifiedOn.millis);
+			}
+			return response;
+		}
 	});
 
 	var collection = core.Backbone.Collection.extend({

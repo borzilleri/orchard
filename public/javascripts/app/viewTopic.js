@@ -8,7 +8,7 @@ define(function(require) {
 	});
 
 	core.app.addInitializer(function(options) {
-		var model = new Topic.Model(options.data.topic);
+		var model = new Topic.Model(options.data.topic, {parse: true});
 		model.get('replies').each(function(reply, index) {
 			reply.set('topicId', this.id);
 			reply.set('index',index);

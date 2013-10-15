@@ -35,7 +35,6 @@ public class Post {
 
 	public boolean deleted = false;
 
-
 	@PrePersist
 	public void prePersist() {
 		createDate = createdOn.toDate();
