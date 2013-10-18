@@ -23,7 +23,7 @@ object Javascript extends Controller {
 			implicit request =>
 				import controllers.routes.javascript._
 				val routes = Routes.javascriptRouter("routes")(
-					Auth.adminLogout
+					Auth.logout
 				)
 				Ok(
 					s"define(function() { $routes; return routes.controllers; });"

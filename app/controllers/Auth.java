@@ -58,13 +58,16 @@ public class Auth extends Controller {
 		}
 
 		// FIXME: Inject this.
-		//Http.Context.current().session().put(Play.application().configuration().getString("auth.admin.sessionkey"), "true");
-		return redirect(routes.Application.index());
-	}
 
-	public Result adminLogout() {
-		//Http.Context.current().session().remove(Play.application().configuration().getString("auth.admin.sessionkey"));
-		return ok();
+		User admin = userDAO.findByEmail("admin");
+		String appToken = admin.makeToken();
+
+		Logger.info("app token made: " + appToken);
+		userDAO.save(admin);
+		// Set it in a cookie
+		response().setCookie(Play.application().configuration()
+			.getString("auth.cookie.name"), appToken, null);
+		return redirect(routes.Application.index());
 	}
 
 	public Result login() {

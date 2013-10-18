@@ -7,7 +7,8 @@ GET           /logout        @controllers.Auth.logout()
 GET           /login/:authToken        @controllers.Auth.authenticate(authToken: String)
 GET           /admin        @controllers.Auth.admin()
 POST          /admin        @controllers.Auth.adminLogin()
-POST          /admin/logout        @controllers.Auth.adminLogout()
+
+GET           /admin/users  @controllers.admin.Users.index()
 
 GET           /topic/:slug        @controllers.Topic.get(slug: String)
 GET           /create-topic        @controllers.Topic.create()
