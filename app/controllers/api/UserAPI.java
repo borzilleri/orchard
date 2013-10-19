@@ -15,6 +15,8 @@ import javax.inject.Inject;
 
 /**
  * @author jonathan
+ *
+ * TODO: Handle "Deleted" users correctly.
  */
 @SubjectPresent(content = "xhr")
 public class UserAPI extends Controller {
@@ -72,7 +74,8 @@ public class UserAPI extends Controller {
 		if( u.email.equalsIgnoreCase("admin") ) {
 			return badRequest(JsonUtils.jsonError("Cannot delete system admin."));
 		}
-		// TODO: OMG. What happens when you delete a user?
+		u.deleted = true;
+		users.save(u);
 		return ok();
 	}
 

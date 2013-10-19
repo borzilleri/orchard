@@ -8,10 +8,9 @@
 
 
 ## Admin Panel
-* Add/Edit/Remove Authorized Emails
+* Remove A User (90% done)
+* Add/Remove/Edit email on a user
 * Set users as admin
-* Reset system admin password
-* Set up system admin.
 
 ## User Profiles
 * Edit Display Name
@@ -31,3 +30,5 @@
 * voting/rating
 * surveys/polls?
 
+* Set up system admin.
+* Reset system admin password

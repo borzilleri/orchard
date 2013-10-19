@@ -37,6 +37,9 @@ public class User implements Subject {
 	public String displayName;
 
 	@JsonProperty
+	public boolean deleted = false;
+
+	@JsonProperty
 	public String getDisplayName() {
 		return Strings.isNullOrEmpty(displayName) ? email : displayName;
 	}
