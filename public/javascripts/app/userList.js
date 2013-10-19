@@ -4,12 +4,11 @@ define(function(require) {
 	var View = require('./views/admin/UserList');
 
 	core.app.addRegions({
-		users: '#user-table'
+		users: '#main-view'
 	});
 
 	core.app.addInitializer(function(options) {
 		core.app.users.show(new View({
-			el: core.$('#user-list-view'),
 			collection: new User.Collection(options.data.users)
 		}));
 	});

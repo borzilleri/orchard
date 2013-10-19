@@ -8,7 +8,7 @@ GET           /login/:authToken        @controllers.Auth.authenticate(authToken:
 GET           /admin        @controllers.Auth.admin()
 POST          /admin        @controllers.Auth.adminLogin()
 
-GET           /admin/users  @controllers.admin.Users.index()
+GET           /admin/users        @controllers.admin.Users.index()
 
 GET           /topic/:slug        @controllers.Topic.get(slug: String)
 GET           /create-topic        @controllers.Topic.create()
@@ -24,6 +24,9 @@ PUT           /api/topics/:id/:index        @controllers.api.ReplyAPI.update(id:
 DELETE        /api/topics/:id        @controllers.api.TopicAPI.destroy(id: String)
 
 GET           /api/users/:id        @controllers.api.UserAPI.get(id: String)
+POST          /api/users        @controllers.api.UserAPI.add()
+PUT           /api/users/:id        @controllers.api.UserAPI.update(id: String)
+DELETE        /api/users/:id        @controllers.api.UserAPI.remove(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /js/routes.js        controllers.Javascript.jsRoutes()

@@ -21,9 +21,12 @@ object Javascript extends Controller {
 	def userRoutes = Cached("user-routes") {
 		Action {
 			implicit request =>
-				import controllers.routes.javascript._
+				import controllers.api.routes.javascript._
 				val routes = Routes.javascriptRouter("routes")(
-					Auth.logout
+					UserAPI.get,
+					UserAPI.add,
+					UserAPI.update,
+					UserAPI.remove
 				)
 				Ok(
 					s"define(function() { $routes; return routes.controllers; });"

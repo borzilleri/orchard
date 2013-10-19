@@ -24,7 +24,7 @@ define(function(require) {
 		ui: {
 			groups: '.control-group'
 		},
-		initialize: function(options) {
+		initialize: function() {
 			_(this).bindAll('displayError');
 			this.on('errors:show', this.displayErrors, this);
 			this.on('errors:clear', this.clearErrors, this);
