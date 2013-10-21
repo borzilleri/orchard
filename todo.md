@@ -23,7 +23,7 @@
 * Implement set up/init script/page
 
 # Future Versions
-* image uploading
+* image uploading -> s3?
 * imgur support?
 * wiki pages
 * pin thread
